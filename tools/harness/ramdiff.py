@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Find stale ROM pointers in RAM: compare RAM dumps of the matching ROM and a SHIFT build.
 A ROM pointer at or above the shift point must differ by exactly SHIFT; a word that holds the
-same ROM-range value in both runs is reported (it came from an unconverted pointer).
+same ROM-range value in both runs is reported as STALE (an unconverted pointer?); any other difference as DIFF.
 usage: ramdiff.py dir0 dir1 shift [shift_point]"""
 import sys, struct
 d0, d1, shift = sys.argv[1], sys.argv[2], int(sys.argv[3], 0)
@@ -16,5 +16,10 @@ for name, base in (('ew', 0x02000000), ('iw', 0x03000000)):
             elif y == x:
                 stale += 1
                 print('STALE %08X: %08X' % (base + o, x))
-            else: other += 1
+            else:
+                other += 1
+                print('OTHER %08X: %08X / %08X' % (base + o, x, y))
+        elif x != y:
+            other += 1
+            print('DIFF  %08X: %08X / %08X' % (base + o, x, y))
     print('%s: moved-ok %d, stale %d, other-diff %d' % (name, ok, stale, other))

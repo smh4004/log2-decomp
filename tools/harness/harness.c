@@ -17,6 +17,8 @@
  *   syncpc ADDR        from now on, count run/tap time in passes of the game loop through ADDR, not video frames
  *                      (0 = video frames). LoG2: 0x08020D78, just after the VBlank wait loop in WaitForVBlank (0x08020D40)
  *   capture LIST DIR N snapshot regs + RAM/IO/VRAM at the first N entries of each listed function (hex list)
+ *   hitlog LIST        like firsthit, but print every entry (with r0-r3); `hitlog off` stops
+ *   firsthit LIST      from now on, print `first ADDR frame N` the first time the CPU enters each listed address (hex list)
  *   tracepc ADDR [MAX] from now on, run/tap single-step and print regs (+4 words at r0..r3) at every pass of ADDR
  *   watchon ADDR       from now on, run/tap single-step and report every change of the word at ADDR
  *   guardon ROMEND     from now on, run/tap single-step and report the first PC outside valid memory
@@ -65,6 +67,7 @@ static void snap(struct mCore* core, uint32_t pc) {
     fclose(f); cap_hits[idx]++; cap_total++;
 }   /* "watchon ADDR": report writes during run/tap */
 
+static uint8_t* fh_bits; static int fh_on, fh_all;           /* "firsthit LIST" */
 static uint32_t trace_pc; static long trace_left;   /* "tracepc ADDR [MAX]" */
 static uint32_t sync_pc;              /* "syncpc ADDR": one `run` step = one pass of the game loop through ADDR */
 
@@ -85,7 +88,7 @@ static void frame(struct mCore* core) {
         }
         return;
     }
-    if ((!guard_end || guard_hit) && !watch_on && !cap_on && !trace_pc) { core->runFrame(core); return; }
+    if ((!guard_end || guard_hit) && !watch_on && !cap_on && !trace_pc && !fh_on) { core->runFrame(core); return; }
     struct ARMCore* cpu = core->cpu;
     uint64_t fc = core->frameCounter(core);
     while (core->frameCounter(core) == fc) {
@@ -96,6 +99,14 @@ static void frame(struct mCore* core) {
         if (cap_on && pc >= 0x08000002 && pc < 0x08100002 && (cpu->cpsr.packed & 0x20)) {
             uint32_t idx = (pc - 2 - 0x08000000) >> 1;
             if ((cap_bits[idx >> 3] >> (idx & 7) & 1) && cap_hits[idx] < cap_max) snap(core, pc - 2);
+        }
+        if (fh_on && pc >= 0x08000002 && pc < 0x08800002) {
+            uint32_t a = pc - ((cpu->cpsr.packed & 0x20) ? 2 : 4), i = (a - 0x08000000) >> 1;
+            if (fh_bits[i >> 3] >> (i & 7) & 1) {
+                if (fh_all) printf("hit %08x frame %llu r0-r3 %08x %08x %08x %08x lr %08x\n", a, (unsigned long long) frame_no,
+                                   cpu->gprs[0], cpu->gprs[1], cpu->gprs[2], cpu->gprs[3], cpu->gprs[14]);
+                else { fh_bits[i >> 3] &= ~(1 << (i & 7)); printf("first %08x frame %llu\n", a, (unsigned long long) frame_no); }
+            }
         }
         if (trace_pc && pc - ((cpu->cpsr.packed & 0x20) ? 2 : 4) == trace_pc && trace_left > 0) {
             trace_left--;
@@ -201,6 +212,13 @@ int main(int argc, char** argv) {
             strncpy(cap_dir, a2, sizeof cap_dir - 1); cap_max = atoi(a3); cap_on = 1;
         }
         else if (!strcmp(cmd, "capstat")) printf("captured %ld snapshots\n", cap_total);
+        else if (!strcmp(cmd, "hitlog") && !strcmp(a1, "off")) fh_on = 0;
+        else if (!strcmp(cmd, "firsthit") || !strcmp(cmd, "hitlog")) {
+            fh_all = !strcmp(cmd, "hitlog");
+            fh_bits = calloc(0x800000 / 16, 1); FILE* lf = fopen(a1, "r"); char ln[64];
+            while (lf && fgets(ln, sizeof ln, lf)) { uint32_t ad = strtoul(ln, 0, 16); if (ad >= 0x08000000 && ad < 0x08800000) { uint32_t i = (ad - 0x08000000) >> 1; fh_bits[i >> 3] |= 1 << (i & 7); } }
+            if (lf) fclose(lf); fh_on = 1;
+        }
         else if (!strcmp(cmd, "tracepc")) { trace_pc = strtoul(a1, 0, 16); trace_left = a2[0] ? atol(a2) : 100000; }
         else if (!strcmp(cmd, "watchon")) { watch_addr = strtoul(a1, 0, 16); watch_val = core->busRead32(core, watch_addr); watch_on = 1; }
         else if (!strcmp(cmd, "tap")) {

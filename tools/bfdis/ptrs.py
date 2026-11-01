@@ -16,12 +16,12 @@ Rejected (ambiguous):
   target inside a WFZ container (compressed bytes cannot be addressed), odd non-function targets,
   isolated words with a single reference.
 """
-import struct, collections, bisect
+import struct, collections, bisect, re
 
 ROM = 0x08000000
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from game import SOUND_LO, SOUND_HI, NOPTR   # uncompressed sound region (samples + sequences); no-pointer ranges
+from game import SOUND_LO, SOUND_HI, NOPTR, PALETTE_FILTER, ISOLATED_REFCOUNT   # uncompressed sound region (samples + sequences); no-pointer ranges
 
 
 def classify(d, db, blocks, text_end, ro_lo, ro_hi, image_end):
@@ -60,6 +60,39 @@ def classify(d, db, blocks, text_end, ro_lo, ro_hi, image_end):
         nz = sum(1 for x in s if x not in (0, 0xFF))
         return sum(dl) / len(dl) < 20 and nz > 0.7 * len(s)
 
+    def palettelike(o):
+        # 16-colour palettes (BGR555): the aligned 32-byte block holds 16 halfwords with bit 15 clear, and most of its
+        # words are not ROM-pointer shaped (a grey 0x0842 in the high half makes a word look like 0x0842xxxx)
+        b = o & ~31
+        if re.search(rb'[ -~]{6}', d[b:b + 32]): return False          # text, not colours
+        hw = struct.unpack_from('<16H', d, b)
+        if any(h & 0x8000 for h in hw): return False
+        ws = struct.unpack_from('<8I', d, b)
+        big = sum(1 for h in hw if h >= 0x400)          # colours, not small record fields
+        return sum(1 for w in ws if ROM <= w < ROM + image_end) <= 2 and big >= 11 and len(set(hw)) >= 8
+
+    # words that are pointers to known Thumb functions: a pointer to a run of them points to a method table
+    fptr = set()
+    for o in range(ro_lo, ro_hi, 4):
+        w = struct.unpack_from('<I', d, o)[0]
+        if w & 1 and (w - 1) in funcs and funcs[w - 1] == 't' and not inwfz[o]: fptr.add(o)
+
+    def methods_at(t):
+        return sum(1 for k in range(0, 16, 4) if (t + k) in fptr) >= 2
+
+    def ptrtable_at(t):
+        """t starts a run of at least two pointer-looking words (an array of pointers)"""
+        if not ro_lo <= t < ro_hi - 8 or t % 4: return False
+        a, b = struct.unpack_from('<II', d, t)
+        return all(ROM <= x < ROM + image_end and x & 3 != 3 for x in (a, b)) and not inwfz[t]
+
+    def object_at(t):
+        """t holds a method table (vtable-like) or starts with a pointer to one (a C++/C object stored in ROM)"""
+        if methods_at(t): return True
+        if not ro_lo <= t < ro_hi - 4 or t % 4: return False
+        v = struct.unpack_from('<I', d, t)[0]
+        return ROM <= v < ROM + image_end and v % 4 == 0 and methods_at(v - ROM)
+
     acc, amb = {}, {}
     cand = {}
     for o in range(ro_lo, ro_hi, 4):
@@ -68,6 +101,10 @@ def classify(d, db, blocks, text_end, ro_lo, ro_hi, image_end):
         if ROM <= w < ROM + image_end:
             if any(lo <= o < hi for lo, hi in NOPTR):
                 amb[o] = (w, 'noptr'); continue
+            if w % 4 == 0 and object_at(w - ROM):
+                cand[o] = w; continue                  # pointer to an object or its method table: never data
+            if PALETTE_FILTER and (w - ROM) not in wstart and (w & ~1) not in pool_targets and palettelike(o):
+                amb[o] = (w, 'palette'); continue
             if (w - ROM) not in wstart and pcmlike(o):
                 amb[o] = (w, 'pcm'); continue
             if smooth(w) and not ((w - ROM) in wstart or (w & ~1) in pool_targets or (w - 1) in funcs):
@@ -110,7 +147,8 @@ def classify(d, db, blocks, text_end, ro_lo, ro_hi, image_end):
                     stride = True; break
         # without a neighbouring pointer the evidence is weak: also require an aligned target that is either
         # close by (same asset bank) or pointed to several times
-        weak_ok = w % 4 == 0 and (abs(t - o) < 0x80000 or refcount[w] >= 3)
+        weak_ok = w % 4 == 0 and (abs(t - o) < 0x80000 or w in pool_targets or object_at(t) or ptrtable_at(t)
+                                  or (ISOLATED_REFCOUNT and refcount[w] >= ISOLATED_REFCOUNT))
         if neighbour or (stride or refcount[w] >= 2) and weak_ok:
             acc[o] = (w, 'table')
         else:
@@ -121,8 +159,16 @@ def classify(d, db, blocks, text_end, ro_lo, ro_hi, image_end):
     for o in isolated:
         w = cand[o]
         i = bisect.bisect_right(obj_starts, o) - 1
-        if i >= 0 and o - obj_starts[i] < 0x20:
+        tset = getattr(classify, '_tset', None)
+        if tset is None or tset[0] is not obj_starts: tset = classify._tset = (obj_starts, set(obj_starts))
+        if i >= 0 and o - obj_starts[i] < 0x20 and ((w - ROM) in tset[1] or abs(w - ROM - o) < 0x10000):   # and the target is a known object or close by
             acc[o] = (w, 'struct')
+        elif w % 4 == 0 and object_at(w - ROM):           # pointer to an object / its method table
+            acc[o] = (w, 'methods')
+        elif w % 4 == 0 and ptrtable_at(w - ROM):         # pointer to an array of pointers
+            acc[o] = (w, 'ptrarray')
+        elif 4 <= w - ROM - o <= 16:                      # points just past itself (record + inline data): never chance
+            acc[o] = (w, 'inline')
         else:
             amb[o] = (w, 'isolated')
     # odd targets (byte streams such as scripts): accept only next to a strongly-typed pointer

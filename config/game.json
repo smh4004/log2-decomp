@@ -40,5 +40,8 @@
   ]
  ],
  "call_via": "0x08021D28",
- "syncpc": "0x08020D78"
+ "syncpc": "0x08020D78",
+ "bios_blocks": false,
+ "palette_filter": false,
+ "isolated_refcount": 3
 }

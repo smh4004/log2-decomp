@@ -19,7 +19,8 @@ It's converted to a symbol only with evidence:
 | `code` | the same target is also loaded by code from a literal pool |
 | `label` | target is a code-area label (pool, vtable, data label) |
 | `table` | target in `.rodata`, with another candidate within 8 bytes, or in a regular-stride array, or referenced 2+ times (isolated words additionally need an aligned target that is close by or referenced 3+ times) |
-| `struct` | an isolated word at the start of an object something else points to |
+| `struct` | an isolated word at the start of an object something else points to, whose target is a known object or close by |
+| `methods` / `ptrarray` / `inline` | the target is a method table (2+ function pointers) or an object starting with a pointer to one; an array of pointers; or the bytes right after the word itself |
 
 Rejected candidates are listed with a reason in `config/ptr_ambiguous.txt` and stay numbers.
 
@@ -35,6 +36,10 @@ that differed, then comparing the bytes the code read in both ROMs):
 | Wrong timer callback | a pool word `0x08021924` is an **even** pointer to a Thumb function; `ld` sets bit 0 on function symbols | the emitter adds a plain alias label `sub_08021924_even` |
 | A table pointer in IWRAM stayed old | the RW image (copied to IWRAM) holds a pointer into `.rodata` | `emit.py data_ptr` converts aligned `.rodata` pointers inside the RW image |
 | Spurious functions in strings | isolated odd words in data pointed into assert messages (`K:\Source\...`) | odd-pointer and gap stages skip printable C strings |
+
+Per-game switches in `config/game.json`: `noptr` ranges, `bios_blocks` (scan GBA BIOS Huffman/LZ77 streams,
+`tools/bfdis/lz.py`; Legacy of Goku only), `palette_filter`, `isolated_refcount`. The rules were extended while making
+Legacy of Goku (1) relocatable; this ROM still passes with them.
 
 ## Known non-pointer dependencies
 * RAM values that happen to look like ROM addresses (sound mixer positions, sprite byte buffers) show up in

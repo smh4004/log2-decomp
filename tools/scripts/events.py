@@ -38,6 +38,11 @@ from const import ROM, RODATA
 ZBUF = 0x800                   # compressed text is decompressed into a 2 KB buffer
 
 
+def SYM(o):
+    """label or label+0xK, without spaces (one token in .evt files)"""
+    return L.symbol(o).replace(' ', '')
+
+
 def u32(d, o): return struct.unpack_from('<I', d, o)[0]
 def u16(d, o): return struct.unpack_from('<H', d, o)[0]
 def isptr(v): return ROM + RODATA[0] <= v < ROM + RODATA[1]
@@ -204,12 +209,12 @@ def export_list(d, o, items, term, banks, names, owner):
             out.append('step %d %s 0x%02X %s   ; %s' % (sid, 'say' if ty == 1 else 'zsay', s['speaker'], qstr(s['text']), tl))
         elif ty == 3:
             f = s['fmt']; fe = d.index(b'\0', f)
-            out.append('step %d sayf 0x%02X %s   ; %s format: %s' % (sid, s['speaker'], L.symbol(f), tl, qstr(d[f:fe].decode('latin-1'))))
+            out.append('step %d sayf 0x%02X %s   ; %s format: %s' % (sid, s['speaker'], SYM(f), tl, qstr(d[f:fe].decode('latin-1'))))
             out.append(indent(B.disasm(d[:s['code'][1]], s['code'][0], names)[0]))
         elif ty == 4:
-            out.append('step %d zsayf 0x%02X %s %s   ; %s' % (sid, s['speaker'], L.symbol(s['argcode']), qstr(s['text']), tl))
+            out.append('step %d zsayf 0x%02X %s %s   ; %s' % (sid, s['speaker'], SYM(s['argcode']), qstr(s['text']), tl))
         elif ty == 5:
-            out.append('step %d goto %s   ; %s' % (sid, L.symbol(s['target']), tl))
+            out.append('step %d goto %s   ; %s' % (sid, SYM(s['target']), tl))
         else:
             e = L.object_end(t)
             out.append('step %d raw %d %s   ; %s' % (sid, ty, d[t + 3:e].hex(' '), tl))
@@ -322,11 +327,11 @@ def same_step(d, t, st, data):
         if k == 'zsay':
             spk, txt = _spk_text(st['rest']); return d[t + 3] == spk and s['text'] == txt
         p = st['rest'].split(None, 2)
-        return d[t + 3] == int(p[0], 0) and L.symbol(s['argcode']) == p[1] and s['text'] == unquote(p[2])
+        return d[t + 3] == int(p[0], 0) and SYM(s['argcode']) == p[1] and s['text'] == unquote(p[2])
     if isinstance(data, tuple):
-        if k == 'goto': return d[t + 2] == 5 and u16(d, t) == st['id'] and L.symbol(s['target']) == st['rest'].split()[0]
+        if k == 'goto': return d[t + 2] == 5 and u16(d, t) == st['id'] and SYM(s['target']) == st['rest'].split()[0]
         p = st['rest'].split(None, 2)
-        return (d[t + 2] == 3 and u16(d, t) == st['id'] and d[t + 3] == int(p[0], 0) and L.symbol(s['fmt']) == p[1]
+        return (d[t + 2] == 3 and u16(d, t) == st['id'] and d[t + 3] == int(p[0], 0) and SYM(s['fmt']) == p[1]
                 and d[s['code'][0]:s['code'][1]] == B.asm('\n'.join(st['body']), None))
     return data == d[t:s['end']]
 

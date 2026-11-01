@@ -322,7 +322,9 @@ gUnknown_087FBDBC:
 	.4byte gUnknown_08400780
 	.incbin "baserom.gba", 0x7FC01C, 0x48
 	.4byte gUnknown_08400780
-	.incbin "baserom.gba", 0x7FC068, 0xAC
+	.incbin "baserom.gba", 0x7FC068, 0x1C
+	.4byte gUnknown_08400004
+	.incbin "baserom.gba", 0x7FC088, 0x8C
 	.4byte gUnknown_08400780
 	.incbin "baserom.gba", 0x7FC118, 0x28
 	.4byte gUnknown_08400840
@@ -350,7 +352,9 @@ gUnknown_087FBDBC:
 	.4byte gUnknown_08400940
 	.incbin "baserom.gba", 0x7FC82C, 0x8
 	.4byte gUnknown_08401840
-	.incbin "baserom.gba", 0x7FC838, 0xE0
+	.incbin "baserom.gba", 0x7FC838, 0xD0
+	.4byte gUnknown_08400800
+	.incbin "baserom.gba", 0x7FC90C, 0xC
 	.4byte gUnknown_08400820
 	.incbin "baserom.gba", 0x7FC91C, 0x12
 gUnknown_087FC92E:

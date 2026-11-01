@@ -54,7 +54,20 @@ def wfz_blocks(path):
     if not os.path.exists(path):
         print('scanning for WFZ containers ...')
         subprocess.check_call([sys.executable, 'tools/wfz/scan_wfz.py', 'baserom.gba', path, '%X' % RO_LO, '%X' % RO_HI])
-    return json.load(open(path))
+    blocks = json.load(open(path))
+    # GBA BIOS streams (Huffman / LZ77 / RLE, tools/bfdis/lz.py) are compressed bytes too
+    lzp = os.path.join(os.path.dirname(path), 'lz_blocks.json')
+    from game import BIOS_BLOCKS
+    if not BIOS_BLOCKS: return blocks
+    if not os.path.exists(lzp):
+        subprocess.check_call([sys.executable, 'tools/bfdis/lz.py', 'baserom.gba', lzp, '%X' % RO_LO, '%X' % RO_HI])
+    taken = sorted((o, e) for o, sz, e, t in blocks)
+    import bisect as _b
+    for blk in json.load(open(lzp)):
+        i = _b.bisect_right(taken, (blk[0], 1 << 40)) - 1
+        if i >= 0 and taken[i][0] <= blk[0] < taken[i][1]: continue
+        blocks.append(blk)
+    return blocks
 
 
 def load_kv(path):

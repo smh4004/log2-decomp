@@ -619,8 +619,6 @@
 	.global gUnknown_082679FC
 	.global gUnknown_08267A2C
 	.global gUnknown_08267A5C
-	.global gUnknown_08267B28
-	.global gUnknown_08267C28
 	.global gUnknown_08267D28
 	.global gUnknown_08267DD4
 	.global gUnknown_08267E80
@@ -762,9 +760,6 @@
 	.global gUnknown_0826EFC4
 	.global gUnknown_0826EFF4
 	.global gUnknown_0826F024
-	.global gUnknown_0826F0F0
-	.global gUnknown_0826F1F0
-	.global gUnknown_0826F2F0
 	.global gUnknown_0826F3F0
 	.global gUnknown_0826F4F4
 	.global gUnknown_0826F5F8
@@ -1016,7 +1011,6 @@
 	.global gUnknown_0827B0A0
 	.global gUnknown_0827B0C4
 	.global gUnknown_0827B0E8
-	.global gUnknown_0827B234
 	.global gUnknown_0827B334
 	.global gUnknown_0827B434
 	.global gUnknown_0827B530
@@ -4647,10 +4641,7 @@ gUnknown_08267A5C:
 	.4byte gUnknown_082679CC
 	.4byte gUnknown_082679FC
 	.4byte gUnknown_08267A2C
-gUnknown_08267B28:
-	.incbin "baserom.gba", 0x267B28, 0x100
-gUnknown_08267C28:
-	.incbin "baserom.gba", 0x267C28, 0x100
+	.incbin "baserom.gba", 0x267B28, 0x200
 gUnknown_08267D28:
 	.incbin "baserom.gba", 0x267D28, 0xAC
 gUnknown_08267DD4:
@@ -5212,12 +5203,7 @@ gUnknown_0826F024:
 	.4byte gUnknown_0826EF94
 	.4byte gUnknown_0826EFC4
 	.4byte gUnknown_0826EFF4
-gUnknown_0826F0F0:
-	.incbin "baserom.gba", 0x26F0F0, 0x100
-gUnknown_0826F1F0:
-	.incbin "baserom.gba", 0x26F1F0, 0x100
-gUnknown_0826F2F0:
-	.incbin "baserom.gba", 0x26F2F0, 0x100
+	.incbin "baserom.gba", 0x26F0F0, 0x300
 gUnknown_0826F3F0:
 	.incbin "baserom.gba", 0x26F3F0, 0x104
 gUnknown_0826F4F4:
@@ -6210,7 +6196,6 @@ gUnknown_0827B0E8:
 	.4byte gUnknown_0827B07C
 	.4byte gUnknown_0827B0A0
 	.4byte gUnknown_0827B0C4
-gUnknown_0827B234:
 	.incbin "baserom.gba", 0x27B234, 0x100
 gUnknown_0827B334:
 	.incbin "baserom.gba", 0x27B334, 0x100

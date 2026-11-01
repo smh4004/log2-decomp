@@ -1325,8 +1325,6 @@
 	.global gUnknown_08207B20
 	.global gUnknown_08207B50
 	.global gUnknown_08207B80
-	.global gUnknown_08207C5C
-	.global gUnknown_08207D5C
 	.global gUnknown_08207E5C
 	.global gUnknown_08207E94
 	.global gUnknown_08207ECC
@@ -1395,7 +1393,6 @@
 	.global gUnknown_08209AFC
 	.global gUnknown_08209B2C
 	.global gUnknown_08209B5C
-	.global gUnknown_08209BF8
 	.global gUnknown_08209CF8
 	.global gUnknown_08209E18
 	.global gUnknown_08209F30
@@ -2439,7 +2436,9 @@ gUnknown_081C4522:
 gUnknown_081C4941:
 	.incbin "baserom.gba", 0x1C4941, 0x428
 gUnknown_081C4D69:
-	.incbin "baserom.gba", 0x1C4D69, 0x41F
+	.incbin "baserom.gba", 0x1C4D69, 0x10F
+	.4byte gUnknown_0839D410
+	.incbin "baserom.gba", 0x1C4E7C, 0x30C
 gUnknown_081C5188:
 	.incbin "baserom.gba", 0x1C5188, 0x46E
 gUnknown_081C55F6:
@@ -2528,13 +2527,17 @@ gUnknown_081C904C:
 	.4byte gUnknown_0814F41C
 	.incbin "baserom.gba", 0x1C91D4, 0x44
 	.4byte gUnknown_0840D631
-	.incbin "baserom.gba", 0x1C921C, 0x114
+	.incbin "baserom.gba", 0x1C921C, 0x1C
+	.4byte gUnknown_083BD644
+	.incbin "baserom.gba", 0x1C923C, 0xF4
 	.4byte gUnknown_08651E14
 	.incbin "baserom.gba", 0x1C9334, 0xF4
 	.4byte gUnknown_08641C22
 	.incbin "baserom.gba", 0x1C942C, 0xF2
 gUnknown_081C951E:
-	.incbin "baserom.gba", 0x1C951E, 0x45B
+	.incbin "baserom.gba", 0x1C951E, 0x1F2
+	.4byte gUnknown_083BD644
+	.incbin "baserom.gba", 0x1C9714, 0x265
 gUnknown_081C9979:
 	.incbin "baserom.gba", 0x1C9979, 0x45D
 gUnknown_081C9DD6:
@@ -7250,10 +7253,7 @@ gUnknown_08207B80:
 	.4byte gUnknown_08207AF0
 	.4byte gUnknown_08207B20
 	.4byte gUnknown_08207B50
-gUnknown_08207C5C:
-	.incbin "baserom.gba", 0x207C5C, 0x100
-gUnknown_08207D5C:
-	.incbin "baserom.gba", 0x207D5C, 0x100
+	.incbin "baserom.gba", 0x207C5C, 0x200
 gUnknown_08207E5C:
 	.incbin "baserom.gba", 0x207E5C, 0x38
 gUnknown_08207E94:
@@ -7520,7 +7520,6 @@ gUnknown_08209B5C:
 	.4byte gUnknown_08209ACC
 	.4byte gUnknown_08209AFC
 	.4byte gUnknown_08209B2C
-gUnknown_08209BF8:
 	.incbin "baserom.gba", 0x209BF8, 0x100
 gUnknown_08209CF8:
 	.incbin "baserom.gba", 0x209CF8, 0x120

@@ -21,3 +21,6 @@ IMAGE_END = IWRAM[0] + IWRAM[2]
 NOPTR = [(num(r[0]), num(r[1])) for r in G.get('noptr', [])]
 CALL_VIA = num(G.get('call_via', 0))              # __call_via_r0 (8 x 'bx rN')
 SYNCPC = num(G.get('syncpc', 0))                  # harness frame sync point (after the VBlank wait loop)
+BIOS_BLOCKS = G.get('bios_blocks', False)        # scan for GBA BIOS Huffman/LZ77 streams (tools/bfdis/lz.py)
+PALETTE_FILTER = G.get('palette_filter', False)  # reject pointer-looking words inside 16-colour palettes
+ISOLATED_REFCOUNT = G.get('isolated_refcount', 3)  # isolated far pointers need this many references (0 = never)
