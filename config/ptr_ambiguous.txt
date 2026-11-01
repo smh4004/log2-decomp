@@ -1193,6 +1193,7 @@
 071C84  080B05F8  isolated
 071F64  083A1B00  inside_wfz
 0723D4  080B3E4D  odd
+07246C  08003725  func_weak
 0724F8  081AF100  isolated
 07253C  08092B45  odd
 07265C  080DFBBA  isolated
@@ -1210,6 +1211,7 @@
 073168  080000FD  odd
 073178  08231111  inside_wfz
 073270  0825EFDB  inside_wfz
+0732B0  08001BC3  func_weak
 073354  08372C15  inside_wfz
 073384  083909F8  inside_wfz
 0736E0  08272508  inside_wfz
@@ -1617,6 +1619,7 @@
 088578  080EEE04  isolated
 08862C  080B0B00  isolated
 0887EC  081E1EE9  inside_wfz
+088818  0801F4DD  func_weak
 088998  0814FC07  odd
 088AEC  0811181E  isolated
 089CB0  08210DF1  pcm
@@ -2215,6 +2218,7 @@
 0C3A74  082EF911  pcm
 0C3B84  08102504  pcm
 0C3BB8  0815E5EF  pcm
+0C3CBC  0800F2FB  func_weak
 0C3F84  0800F12B  pcm
 0C4038  08020604  pcm
 0C415C  08060B00  pcm
@@ -3693,6 +3697,7 @@
 1555A0  08260825  inside_wfz
 155DAC  08280827  inside_wfz
 155F28  08261839  inside_wfz
+155F68  08018407  func_weak
 156004  08220028  inside_wfz
 15603C  083E180C  isolated
 1560D0  08472618  inside_wfz
@@ -3777,6 +3782,7 @@
 1686AC  08260D25  inside_wfz
 168FE8  08280B3C  inside_wfz
 1692A8  08272822  inside_wfz
+169D8C  08012615  func_weak
 169EA4  08272C25  inside_wfz
 169EEC  08231D18  inside_wfz
 16B55C  080F144E  isolated
@@ -3813,6 +3819,7 @@
 16D848  08270126  inside_wfz
 16D878  08270C25  inside_wfz
 16D8AC  08077802  isolated
+16D8D0  08014F45  func_weak
 16DA58  0808041A  isolated
 16DAAC  08070416  isolated
 16DB54  08077802  isolated
@@ -3942,6 +3949,7 @@
 178100  0833C333  inside_wfz
 1781C8  08282A77  inside_wfz
 17848C  08282625  inside_wfz
+178704  08011DF1  func_weak
 178E78  08044032  isolated
 178F2C  0824273E  inside_wfz
 179450  0804303C  isolated
@@ -4661,6 +4669,7 @@
 1D854C  081909E6  isolated
 1D9074  08705A88  isolated
 1D9084  087058E8  isolated
+1D95DC  08000315  func_weak
 1D967C  08383500  inside_wfz
 20DEF0  08020040  text_unlabeled
 302860  08020200  bytepattern
@@ -4678,8 +4687,10 @@
 3B6CE0  0804FD7C  isolated
 3B8D2C  085016E6  inside_wfz
 3B8F78  087E638A  inside_wfz
+3B9104  08028007  func_weak
 3B9178  08036149  odd
 3B9F24  08571100  inside_wfz
+3BA044  08001103  func_weak
 3BA35C  0842021D  inside_wfz
 3BB17C  086B249F  inside_wfz
 3BD430  08261631  inside_wfz
@@ -4704,12 +4715,14 @@
 3C5CC0  087D9502  inside_wfz
 3C64C4  08108102  isolated
 3C651C  08328102  inside_wfz
+3C7594  08000313  func_weak
 3C7880  08108C46  isolated
 3C7C80  08108C46  isolated
 3C8518  083D0B13  odd
 3C8638  081305C0  isolated
 3C87CC  083D0B13  odd
 3C88DC  081305C0  isolated
+3C9938  08000213  func_weak
 3CA524  087CF79B  inside_wfz
 3CA574  081C9D24  isolated
 3CA720  08799EF2  inside_wfz
@@ -4737,6 +4750,7 @@
 3D2D54  08388202  inside_wfz
 3D2F5C  08728102  inside_wfz
 3D3970  08728102  inside_wfz
+3D5018  0801300D  func_weak
 3D52C8  08008202  text_unlabeled
 3D81F8  08015C0C  text_unlabeled
 3D8D1C  08188102  isolated
@@ -4767,6 +4781,8 @@
 3E5730  0816021D  odd
 3E5984  086A021D  inside_wfz
 3E6898  0832696A  inside_wfz
+3E6B00  0800A809  func_weak
+3E6ED8  08009C73  func_weak
 3E7008  081CE6BD  odd
 3E7720  08128202  isolated
 3E89E4  0825499B  inside_wfz
@@ -4877,6 +4893,7 @@
 5D4574  085BCDAC  inside_wfz
 5D48C8  08169200  isolated
 5D4AD4  0849A822  inside_wfz
+5D5294  080210D7  func_weak
 5D5314  08132590  isolated
 5D5DC4  08002010  text_unlabeled
 5D5DE0  0800900A  text_unlabeled
@@ -4995,11 +5012,13 @@
 5F3994  08456982  inside_wfz
 6065B8  08516185  inside_wfz
 606A74  08516185  inside_wfz
+60B9E8  0800AC0B  func_weak
 61C940  08708841  inside_wfz
 61CAB4  087068DA  inside_wfz
 61CCA4  08598246  inside_wfz
 61CCC8  08306083  inside_wfz
 61CDA0  08146125  odd
+61CE20  0800D6C7  func_weak
 62CB34  084D1E2A  inside_wfz
 62D1B0  08630885  inside_wfz
 62D3DC  085998E5  inside_wfz
@@ -5024,6 +5043,7 @@
 641BE0  0870215C  isolated
 641C28  0865AC08  inside_wfz
 641F34  08520C10  inside_wfz
+642020  08004CC9  func_weak
 642104  08526580  inside_wfz
 6445AC  0865E344  inside_wfz
 6445D4  0865E344  inside_wfz
@@ -5044,6 +5064,7 @@
 6A179C  085C9142  inside_wfz
 6A8E6C  08450448  inside_wfz
 6A9034  08652CE0  isolated
+6A90E4  08001C29  func_weak
 6A9174  08153000  isolated
 6D66BC  08010699  pcm
 6D7B6C  08010D0C  pcm
@@ -5256,6 +5277,7 @@
 6EC324  082B082A  inside_wfz
 6EC388  082A042C  inside_wfz
 6EC3DC  082A042C  inside_wfz
+6EDF7C  08021D1D  func_weak
 6EDFAC  08131702  isolated
 6EE054  08021D80  text_unlabeled
 6EE1C8  080B080A  bytepattern

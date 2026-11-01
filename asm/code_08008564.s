@@ -382,7 +382,6 @@
 	.global sub_08009C22
 	.global sub_08009C54
 	.global sub_08009C56
-	.global sub_08009C72
 	.global sub_08009C7A
 	.global sub_08009C7C
 	.global sub_08009C8A
@@ -5108,6 +5107,9 @@ sub_08009C56: @ 0x08009C56
 	lsls r0, r0, #2
 	adds r1, r0, r1
 	ldr r0, _08009E18
+	adds r0, r2, r0
+	bl sub_0801FC22
+	pop {r3, pc}
 	.else
 	thumb_func_start sub_08009C56
 sub_08009C56:
@@ -5119,14 +5121,8 @@ sub_08009C56:
 	bx ip
 	.4byte sub_08009C56__c + 1
 	.thumb
-	.space 10
+	.space 18
 	.endif
-
-	thumb_func_start sub_08009C72
-sub_08009C72: @ 0x08009C72
-	adds r0, r2, r0
-	bl sub_0801FC22
-	pop {r3, pc}
 
 	thumb_func_start sub_08009C7A
 sub_08009C7A: @ 0x08009C7A

@@ -378,7 +378,6 @@
 	.global sub_0801835C
 	.global sub_08018366
 	.global sub_08018398
-	.global sub_08018406
 	.global sub_080184AE
 	.global sub_080184D0
 	.global sub_08018540
@@ -3665,6 +3664,8 @@ _08018390:
 _08018394:
 	.4byte 0x04000018
 
+	.ifndef DECOMP_sub_08018398
+
 	thumb_func_start sub_08018398
 sub_08018398: @ 0x08018398
 	push {r0, r1, r2, r3, r4, r5, r6, r7, lr}
@@ -3721,9 +3722,6 @@ _080183B8:
 	cmp r0, #8
 	beq _08018438
 	cmp r0, #0x10
-
-	thumb_func_start sub_08018406
-sub_08018406: @ 0x08018406
 	beq _0801845C
 	cmp r0, #0x20
 	beq _0801847E
@@ -3820,6 +3818,18 @@ _080184A8:
 	ldr r0, _08018538
 	str r0, [r4, #0x10]
 	b _0801841E
+	.else
+	thumb_func_start sub_08018398
+sub_08018398:
+	bx pc
+	nop
+	.arm
+	ldr ip, [pc]
+	bx ip
+	.4byte sub_08018398__c + 1
+	.thumb
+	.space 262
+	.endif
 
 	.ifndef DECOMP_sub_080184AE
 

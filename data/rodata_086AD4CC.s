@@ -9226,9 +9226,7 @@ gUnknown_086EC618:
 gUnknown_086EC6A4:
 	.incbin "baserom.gba", 0x6EC6A4, 0x185C
 gUnknown_086EDF00:
-	.incbin "baserom.gba", 0x6EDF00, 0x7C
-	.4byte sub_08021D1C + 1
-	.incbin "baserom.gba", 0x6EDF80, 0xE0
+	.incbin "baserom.gba", 0x6EDF00, 0x160
 gUnknown_086EE060:
 	.4byte gUnknown_086EC6A4
 	.4byte gUnknown_086EDF00

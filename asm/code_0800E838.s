@@ -362,7 +362,6 @@
 	.global sub_0800F162
 	.global sub_0800F1AE
 	.global sub_0800F2B6
-	.global sub_0800F2FA
 	.global sub_0800F3F0
 	.global sub_0800F440
 	.global sub_0800F45A
@@ -2283,9 +2282,6 @@ _0800F2F2:
 	cmp r0, #0
 	beq _0800F346
 	ldr r0, [r2, #0x18]
-
-	thumb_func_start sub_0800F2FA
-sub_0800F2FA: @ 0x0800F2FA
 	cmp r0, #0
 	bne _0800F300
 	b _0800F2F0

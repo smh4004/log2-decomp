@@ -412,7 +412,6 @@
 	.global sub_08004C56
 	.global sub_08004CA0
 	.global sub_08004CAC
-	.global sub_08004CC8
 	.global sub_08004EA8
 	.global sub_08004EDC
 	.global sub_08004F00
@@ -2155,21 +2154,6 @@ sub_08004CAC: @ 0x08004CAC
 	ldr r0, [r0, #8]
 	movs r5, #0xff
 	ldr r0, [r0, #0x50]
-	.else
-	thumb_func_start sub_08004CAC
-sub_08004CAC:
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_08004CAC__c + 1
-	.thumb
-	.space 12
-	.endif
-
-	thumb_func_start sub_08004CC8
-sub_08004CC8: @ 0x08004CC8
 	adds r5, #1
 	ldr r1, [r0, #0x3c]
 	ldr r0, _08004E84
@@ -2393,6 +2377,18 @@ _08004EA0:
 	.4byte _080253CC
 _08004EA4:
 	.4byte _080248CC
+	.else
+	thumb_func_start sub_08004CAC
+sub_08004CAC:
+	bx pc
+	nop
+	.arm
+	ldr ip, [pc]
+	bx ip
+	.4byte sub_08004CAC__c + 1
+	.thumb
+	.space 492
+	.endif
 
 	.ifndef DECOMP_sub_08004EA8
 

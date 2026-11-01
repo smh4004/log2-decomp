@@ -3494,9 +3494,7 @@ gUnknown_081D94D0:
 gUnknown_081D952C:
 	.incbin "baserom.gba", 0x1D952C, 0x1C
 gUnknown_081D9548:
-	.incbin "baserom.gba", 0x1D9548, 0x94
-	.4byte sub_08000314 + 1
-	.incbin "baserom.gba", 0x1D95E0, 0x58
+	.incbin "baserom.gba", 0x1D9548, 0xF0
 gUnknown_081D9638:
 	.incbin "baserom.gba", 0x1D9638, 0x44
 gUnknown_081D967C:

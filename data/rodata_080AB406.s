@@ -429,9 +429,7 @@ gUnknown_080BFB20:
 gUnknown_080C1844:
 	.incbin "baserom.gba", 0xC1844, 0x3FC
 gUnknown_080C1C40:
-	.incbin "baserom.gba", 0xC1C40, 0x207C
-	.4byte sub_0800F2FA + 1
-	.incbin "baserom.gba", 0xC3CC0, 0x2B28
+	.incbin "baserom.gba", 0xC1C40, 0x4BA8
 gUnknown_080C67E8:
 	.incbin "baserom.gba", 0xC67E8, 0x7C9
 gUnknown_080C6FB1:

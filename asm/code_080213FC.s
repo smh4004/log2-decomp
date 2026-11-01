@@ -503,7 +503,6 @@
 	.global sub_08021CB0
 	.global sub_08021CEE
 	.global sub_08021CF0
-	.global sub_08021D1C
 	.global sub_08021D28
 	.global sub_08021D2A
 	.global sub_08021D2C
@@ -2237,6 +2236,13 @@ sub_08021CF0: @ 0x08021CF0
 	adds r0, r4, #0
 	add sp, #0x3c
 	pop {r4, r5}
+	pop {r3}
+	bx r3
+	.align 2, 0
+_08021D20:
+	.4byte 0x00000D4B
+_08021D24:
+	.4byte 0x00000D53
 	.else
 	thumb_func_start sub_08021CF0
 sub_08021CF0:
@@ -2247,18 +2253,8 @@ sub_08021CF0:
 	bx ip
 	.4byte sub_08021CF0__c + 1
 	.thumb
-	.space 28
+	.space 40
 	.endif
-
-	thumb_func_start sub_08021D1C
-sub_08021D1C: @ 0x08021D1C
-	pop {r3}
-	bx r3
-	.align 2, 0
-_08021D20:
-	.4byte 0x00000D4B
-_08021D24:
-	.4byte 0x00000D53
 
 	thumb_func_start sub_08021D28
 sub_08021D28: @ 0x08021D28

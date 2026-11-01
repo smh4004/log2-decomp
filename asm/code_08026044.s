@@ -552,6 +552,7 @@
 	.global _08027FA6
 	.global _08027FB4
 	.global _08027FD4
+	.global _08028006
 	.global _08028010
 	.global _0802801A
 	.global _08028024
@@ -984,7 +985,6 @@
 	.global sub_08027F40
 	.global sub_08027FEA
 	.global sub_08027FEC
-	.global sub_08028006
 	.global sub_0802802E
 	.global sub_08028030
 	.global sub_0802805A
@@ -9178,25 +9178,9 @@ sub_08027FEC: @ 0x08027FEC
 	ldr r1, [r4]
 	subs r6, #0x10
 	cmp r2, r1
-	bge sub_08028006
+	bge _08028006
 	str r1, [sp]
-	.else
-	thumb_func_start sub_08027FEC
-sub_08027FEC:
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_08027FEC__c + 1
-	.thumb
-	.space 10
-	.endif
-
-	.ifndef DECOMP_sub_08028006
-
-	thumb_func_start sub_08028006
-sub_08028006: @ 0x08028006
+_08028006:
 	ldr r2, [sp, #4]
 	ldr r1, [r4, #4]
 	cmp r2, r1
@@ -9221,17 +9205,16 @@ _08028024:
 	pop {r4, r5, r6}
 	bx lr
 	.else
-	thumb_func_start sub_08028006
-sub_08028006:
-	nop
+	thumb_func_start sub_08027FEC
+sub_08027FEC:
 	bx pc
 	nop
 	.arm
 	ldr ip, [pc]
 	bx ip
-	.4byte sub_08028006__c + 1
+	.4byte sub_08027FEC__c + 1
 	.thumb
-	.space 22
+	.space 50
 	.endif
 
 	thumb_func_start sub_0802802E

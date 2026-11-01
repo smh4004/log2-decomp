@@ -280,7 +280,6 @@
 	.global sub_08014E86
 	.global sub_08014E98
 	.global sub_08014F30
-	.global sub_08014F44
 	.global sub_08014F80
 	.global sub_08014F88
 	.global sub_08015004
@@ -692,23 +691,6 @@ sub_08014F30: @ 0x08014F30
 	ldr r1, _08015000
 	add r7, sp, #4
 	lsls r3, r0, #1
-	.else
-	thumb_func_start sub_08014F30
-sub_08014F30:
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_08014F30__c + 1
-	.thumb
-	.space 4
-	.endif
-
-	.ifndef DECOMP_sub_08014F44
-
-	thumb_func_start sub_08014F44
-sub_08014F44: @ 0x08014F44
 	adds r0, r3, r0
 	lsls r0, r0, #2
 	adds r6, r0, r1
@@ -736,16 +718,16 @@ sub_08014F44: @ 0x08014F44
 	add sp, #0x14
 	pop {r4, r5, r6, r7, pc}
 	.else
-	thumb_func_start sub_08014F44
-sub_08014F44:
+	thumb_func_start sub_08014F30
+sub_08014F30:
 	bx pc
 	nop
 	.arm
 	ldr ip, [pc]
 	bx ip
-	.4byte sub_08014F44__c + 1
+	.4byte sub_08014F30__c + 1
 	.thumb
-	.space 44
+	.space 64
 	.endif
 
 	thumb_func_start sub_08014F80

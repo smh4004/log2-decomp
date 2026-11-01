@@ -366,7 +366,6 @@
 	.global sub_0800D668
 	.global sub_0800D6A6
 	.global sub_0800D6B4
-	.global sub_0800D6C6
 	.global sub_0800D6C8
 	.global sub_0800D6DE
 	.global sub_0800D730
@@ -3025,6 +3024,7 @@ sub_0800D6B4: @ 0x0800D6B4
 	movs r1, #0
 _0800D6C4:
 	adds r0, r1, #0
+	bx lr
 	.else
 	thumb_func_start sub_0800D6B4
 sub_0800D6B4:
@@ -3035,12 +3035,8 @@ sub_0800D6B4:
 	bx ip
 	.4byte sub_0800D6B4__c + 1
 	.thumb
-	.space 2
+	.space 4
 	.endif
-
-	thumb_func_start sub_0800D6C6
-sub_0800D6C6: @ 0x0800D6C6
-	bx lr
 
 	.ifndef DECOMP_sub_0800D6C8
 

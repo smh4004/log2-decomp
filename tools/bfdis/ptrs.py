@@ -86,7 +86,14 @@ def classify(d, db, blocks, text_end, ro_lo, ro_hi, image_end):
         if w & 1 and (w - 1) in funcs and funcs[w - 1] == 't': acc[o] = (w, 'func'); continue
         if w % 4 == 0 and w in funcs and funcs[w] == 'a': acc[o] = (w, 'func'); continue
         if in_wfz(t): amb[o] = (w, 'inside_wfz'); continue
-        if w & 1 and (w - 1) in insn and insn[w - 1][0] == 't': acc[o] = (w, 'func'); continue
+        if w & 1 and (w - 1) in insn and insn[w - 1][0] == 't':
+            # odd value at a Thumb instruction that is not a known function start: a new entry point only when
+            # it sits in a pointer run or is referenced twice; one isolated hit in a blob is noise
+            if refcount[w] >= 2 or any((o + k) in cand for k in (-12, -8, -4, 4, 8, 12)):
+                acc[o] = (w, 'func')
+            else:
+                amb[o] = (w, 'func_weak')
+            continue
         if w & 1: odd.append(o); continue
         if w in pool_targets: acc[o] = (w, 'code'); continue
         if t < text_end:

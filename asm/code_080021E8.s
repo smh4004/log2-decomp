@@ -355,7 +355,6 @@
 	.global sub_0800350A
 	.global sub_08003520
 	.global sub_08003684
-	.global sub_08003724
 	.global sub_0800379C
 	.global sub_08003B44
 	.global sub_08003B72
@@ -3529,8 +3528,6 @@ sub_08003520:
 	.space 340
 	.endif
 
-	.ifndef DECOMP_sub_08003684
-
 	thumb_func_start sub_08003684
 sub_08003684: @ 0x08003684
 	adds r0, #0xff
@@ -3609,21 +3606,6 @@ sub_08003684: @ 0x08003684
 	lsrs r0, r0, #0xe
 	ldr r2, [r1, r0]
 	movs r1, #0xa8
-	.else
-	thumb_func_start sub_08003684
-sub_08003684:
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_08003684__c + 1
-	.thumb
-	.space 144
-	.endif
-
-	thumb_func_start sub_08003724
-sub_08003724: @ 0x08003724
 	add r0, sp, #0x10
 	bl sub_0801F702
 	b _08003754

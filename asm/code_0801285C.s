@@ -369,7 +369,6 @@
 	.global sub_08012F9A
 	.global sub_08012FCA
 	.global sub_0801300A
-	.global sub_0801300C
 	.global sub_08013034
 	.global sub_0801304A
 	.global sub_0801306E
@@ -1776,14 +1775,11 @@ sub_08012FCA:
 	.space 46
 	.endif
 
+	.ifndef DECOMP_sub_0801300A
+
 	thumb_func_start sub_0801300A
 sub_0801300A: @ 0x0801300A
 	push {r3, r4, r5, lr}
-
-	.ifndef DECOMP_sub_0801300C
-
-	thumb_func_start sub_0801300C
-sub_0801300C: @ 0x0801300C
 	adds r4, r0, #0
 	ldr r0, _080130B4
 	adds r5, r1, #0
@@ -1805,14 +1801,15 @@ _08013024:
 _08013032:
 	pop {r3, r4, r5, pc}
 	.else
-	thumb_func_start sub_0801300C
-sub_0801300C:
+	thumb_func_start sub_0801300A
+sub_0801300A:
+	nop
 	bx pc
 	nop
 	.arm
 	ldr ip, [pc]
 	bx ip
-	.4byte sub_0801300C__c + 1
+	.4byte sub_0801300A__c + 1
 	.thumb
 	.space 24
 	.endif
