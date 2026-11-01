@@ -961,7 +961,6 @@
 	.global gUnknown_083C14BC
 	.global gUnknown_083C14D4
 	.global gUnknown_083C14DC
-	.global gUnknown_083C14EC
 	.global gUnknown_083C14FC
 	.global gUnknown_083C150C
 	.global gUnknown_083C151C
@@ -15045,14 +15044,10 @@ gUnknown_083C14D4:
 	.4byte gUnknown_083C14BC
 	.incbin "baserom.gba", 0x3C14D8, 0x4
 gUnknown_083C14DC:
-	.incbin "baserom.gba", 0x3C14DC, 0x10
-gUnknown_083C14EC:
-	.incbin "baserom.gba", 0x3C14EC, 0x10
+	.incbin "baserom.gba", 0x3C14DC, 0x20
 gUnknown_083C14FC:
 	.4byte gUnknown_083C14DC
-	.incbin "baserom.gba", 0x3C1500, 0x4
-	.4byte gUnknown_083C14EC
-	.incbin "baserom.gba", 0x3C1508, 0x4
+	.incbin "baserom.gba", 0x3C1500, 0xC
 gUnknown_083C150C:
 	.incbin "baserom.gba", 0x3C150C, 0x10
 gUnknown_083C151C:

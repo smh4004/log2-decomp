@@ -21,7 +21,7 @@ import struct, collections, bisect
 ROM = 0x08000000
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from game import SOUND_LO, SOUND_HI          # uncompressed sound region (samples + sequences)
+from game import SOUND_LO, SOUND_HI, NOPTR   # uncompressed sound region (samples + sequences); no-pointer ranges
 
 
 def classify(d, db, blocks, text_end, ro_lo, ro_hi, image_end):
@@ -51,12 +51,25 @@ def classify(d, db, blocks, text_end, ro_lo, ro_hi, image_end):
         b = [(w >> s) & 0xFF for s in (0, 8, 16, 24)]
         return max(abs(b[i] - b[i + 1]) for i in range(3)) <= 8
 
+    def pcmlike(o, W=48):
+        # 8-bit signed audio: consecutive bytes change slowly and are rarely 00/FF. Tables of pointers or
+        # records have large byte-to-byte jumps (xx xx xx 08) or many zero bytes.
+        s = d[o - W:o] + d[o + 4:o + 4 + W]
+        sb = [x - 256 if x > 127 else x for x in s]
+        dl = [abs(sb[i + 1] - sb[i]) for i in range(len(sb) - 1) if i != W - 1]
+        nz = sum(1 for x in s if x not in (0, 0xFF))
+        return sum(dl) / len(dl) < 20 and nz > 0.7 * len(s)
+
     acc, amb = {}, {}
     cand = {}
     for o in range(ro_lo, ro_hi, 4):
         if inwfz[o]: continue
         w = struct.unpack_from('<I', d, o)[0]
         if ROM <= w < ROM + image_end:
+            if any(lo <= o < hi for lo, hi in NOPTR):
+                amb[o] = (w, 'noptr'); continue
+            if (w - ROM) not in wstart and pcmlike(o):
+                amb[o] = (w, 'pcm'); continue
             if smooth(w) and not ((w - ROM) in wstart or (w & ~1) in pool_targets or (w - 1) in funcs):
                 amb[o] = (w, 'bytepattern'); continue
             cand[o] = w

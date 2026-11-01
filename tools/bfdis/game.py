@@ -16,3 +16,6 @@ VT_LO, VT_HI = (num(x) for x in G['vtables'])
 IWRAM = tuple(num(x) for x in G['iwram'])
 SOUND_LO, SOUND_HI = (num(x) for x in G['sound'])
 IMAGE_END = IWRAM[0] + IWRAM[2]
+
+# ranges that never contain pointers (fonts, PCM samples): [lo, hi, comment]
+NOPTR = [(num(r[0]), num(r[1])) for r in G.get('noptr', [])]

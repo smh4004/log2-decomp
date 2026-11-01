@@ -9555,10 +9555,7 @@ gUnknown_08302860:
 	.4byte gUnknown_08301C40
 	.4byte gUnknown_08301C58
 	.4byte gUnknown_08301C70
-	.4byte gUnknown_083027A0
-	.4byte gUnknown_083027D0
-	.4byte gUnknown_08302800
-	.4byte gUnknown_08302830
+	.incbin "baserom.gba", 0x3028BC, 0x10
 gUnknown_083028CC:
 	.incbin "baserom.gba", 0x3028CC, 0x100
 gUnknown_083029CC:

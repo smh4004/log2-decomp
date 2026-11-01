@@ -330,7 +330,6 @@
 	.global sub_0800E8B0
 	.global sub_0800E93C
 	.global sub_0800E946
-	.global sub_0800E9E4
 	.global sub_0800EA3A
 	.global sub_0800EAD8
 	.global sub_0800EB20
@@ -341,21 +340,16 @@
 	.global sub_0800EBDC
 	.global sub_0800EBDE
 	.global sub_0800EBEC
-	.global sub_0800EBFA
 	.global sub_0800EC08
 	.global sub_0800EC82
 	.global sub_0800ECC6
 	.global sub_0800ECF8
 	.global sub_0800ED4E
 	.global sub_0800ED96
-	.global sub_0800EDE6
 	.global sub_0800EE16
 	.global sub_0800EE22
 	.global sub_0800EE50
 	.global sub_0800EEA8
-	.global sub_0800EEE6
-	.global sub_0800EFDC
-	.global sub_0800EFEA
 	.global sub_0800F008
 	.global sub_0800F034
 	.global sub_0800F060
@@ -367,13 +361,9 @@
 	.global sub_0800F13C
 	.global sub_0800F162
 	.global sub_0800F1AE
-	.global sub_0800F1EC
 	.global sub_0800F2B6
-	.global sub_0800F2F4
 	.global sub_0800F2FA
 	.global sub_0800F3F0
-	.global sub_0800F3FE
-	.global sub_0800F406
 	.global sub_0800F440
 	.global sub_0800F45A
 	.global sub_0800F45C
@@ -382,15 +372,9 @@
 	.global sub_0800F52A
 	.global sub_0800F52C
 	.global sub_0800F592
-	.global sub_0800F5D0
-	.global sub_0800F5EC
-	.global sub_0800F5F4
-	.global sub_0800F5FA
 	.global sub_0800F638
 	.global sub_0800F6E8
 	.global sub_0800F6EA
-	.global sub_0800F6F2
-	.global sub_0800F708
 	.global sub_0800F72C
 	.global sub_0800F72E
 	.global sub_0800F73C
@@ -398,61 +382,36 @@
 	.global sub_0800F7A4
 	.global sub_0800F7CA
 	.global sub_0800F7CC
-	.global sub_0800F7EC
-	.global sub_0800F7F4
-	.global sub_0800F7FE
 	.global sub_0800F80C
 	.global sub_0800F832
 	.global sub_0800F8B6
-	.global sub_0800F8DE
-	.global sub_0800F8F0
-	.global sub_0800F8FE
 	.global sub_0800F910
 	.global sub_0800F9A0
 	.global sub_0800F9A2
 	.global sub_0800F9C6
-	.global sub_0800F9EE
-	.global sub_0800F9F2
-	.global sub_0800F9F8
 	.global sub_0800FA1C
 	.global sub_0800FA6C
 	.global sub_0800FACE
-	.global sub_0800FAF8
 	.global sub_0800FB74
 	.global sub_0800FBAC
-	.global sub_0800FBFA
-	.global sub_0800FBFC
 	.global sub_0800FC2C
 	.global sub_0800FC50
 	.global sub_0800FC84
 	.global sub_0800FCCC
-	.global sub_0800FCF6
-	.global sub_0800FCF8
-	.global sub_0800FD02
-	.global sub_0800FD10
 	.global sub_0800FD3E
 	.global sub_0800FD92
 	.global sub_0800FDE6
-	.global sub_0800FDF8
-	.global sub_0800FDFE
 	.global sub_0800FE0C
 	.global sub_0800FE1C
 	.global sub_0800FE2E
-	.global sub_0800FEF4
-	.global sub_0800FEFA
 	.global sub_0800FFA0
 	.global sub_0800FFC0
 	.global sub_0800FFC2
 	.global sub_0800FFE6
-	.global sub_0800FFF4
-	.global sub_0800FFFE
 	.global sub_08010038
 	.global sub_08010098
 	.global sub_080100BE
 	.global sub_080100EC
-	.global sub_080100EE
-	.global sub_080100F8
-	.global sub_080100FE
 	.global sub_08010118
 	.global sub_08010124
 	.global sub_08010194
@@ -462,11 +421,9 @@
 	.global sub_08010276
 	.global sub_080102A2
 	.global sub_08010304
-	.global sub_08010312
 	.global sub_0801038C
 	.global sub_080103E0
 	.global sub_080103F0
-	.global sub_080103FA
 	.global sub_08010464
 	.global sub_08010466
 	.global sub_08010470
@@ -474,8 +431,6 @@
 	.global sub_080104C0
 	.global sub_0801052C
 	.global sub_0801055C
-	.global sub_080105E8
-	.global sub_080105FC
 	.global sub_08010628
 	.global sub_0801066A
 	.global sub_08010698
@@ -490,7 +445,6 @@
 	.global sub_0801079A
 	.global sub_0801079C
 	.global sub_080107D4
-	.global sub_080107FE
 	.global sub_08010818
 
 
@@ -699,6 +653,8 @@ sub_0800E93C: @ 0x0800E93C
 	str r1, [r0, #0x18]
 	bx lr
 
+	.ifndef DECOMP_sub_0800E946
+
 	thumb_func_start sub_0800E946
 sub_0800E946: @ 0x0800E946
 	push {r4, r5, r6, r7, lr}
@@ -780,11 +736,6 @@ _0800E9D2:
 	add r3, sp, #0
 	str r0, [sp, #0x20]
 	ldrb r0, [r4, #0x14]
-
-	.ifndef DECOMP_sub_0800E9E4
-
-	thumb_func_start sub_0800E9E4
-sub_0800E9E4: @ 0x0800E9E4
 	mov r7, sp
 	strb r0, [r3, #0x14]
 	ldr r0, _0800EB1C
@@ -826,16 +777,17 @@ sub_0800E9E4: @ 0x0800E9E4
 	str r6, [r4, #0x4c]
 	b _0800E966
 	.else
-	thumb_func_start sub_0800E9E4
-sub_0800E9E4:
+	thumb_func_start sub_0800E946
+sub_0800E946:
+	nop
 	bx pc
 	nop
 	.arm
 	ldr ip, [pc]
 	bx ip
-	.4byte sub_0800E9E4__c + 1
+	.4byte sub_0800E946__c + 1
 	.thumb
-	.space 70
+	.space 226
 	.endif
 
 	.ifndef DECOMP_sub_0800EA3A
@@ -1159,9 +1111,6 @@ _0800EBF4:
 	ldr r5, [r2, #0x64]
 	str r1, [r4, #0x24]
 	str r4, [r5, #0x54]
-
-	thumb_func_start sub_0800EBFA
-sub_0800EBFA: @ 0x0800EBFA
 	strb r0, [r4, #0x10]
 	movs r0, #0x6f
 	ldr r6, [r4, #0x14]
@@ -1505,22 +1454,6 @@ _0800EDE0:
 	adds r0, r1, #1
 	strb r0, [r4]
 	cmp r1, #0
-	.else
-	thumb_func_start sub_0800ED96
-sub_0800ED96:
-	nop
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_0800ED96__c + 1
-	.thumb
-	.space 62
-	.endif
-
-	thumb_func_start sub_0800EDE6
-sub_0800EDE6: @ 0x0800EDE6
 	bne _0800EE0E
 	movs r1, #0x40
 	ldr r0, [r2]
@@ -1546,6 +1479,19 @@ _0800EE0E:
 _0800EE12:
 	movs r0, #0
 	pop {r4, pc}
+	.else
+	thumb_func_start sub_0800ED96
+sub_0800ED96:
+	nop
+	bx pc
+	nop
+	.arm
+	ldr ip, [pc]
+	bx ip
+	.4byte sub_0800ED96__c + 1
+	.thumb
+	.space 110
+	.endif
 
 	thumb_func_start sub_0800EE16
 sub_0800EE16: @ 0x0800EE16
@@ -1646,6 +1592,8 @@ _0800EEA0:
 _0800EEA4:
 	.4byte _08025FEC
 
+	.ifndef DECOMP_sub_0800EEA8
+
 	thumb_func_start sub_0800EEA8
 sub_0800EEA8: @ 0x0800EEA8
 	push {r4, r5, r6, r7, lr}
@@ -1680,11 +1628,6 @@ _0800EECA:
 	strb r0, [r4, #8]
 	ldr r0, [r6, #4]
 	str r0, [r4, #4]
-
-	.ifndef DECOMP_sub_0800EEE6
-
-	thumb_func_start sub_0800EEE6
-sub_0800EEE6: @ 0x0800EEE6
 	movs r0, #0
 	str r0, [r4, #0x20]
 	ldr r0, [r6, #0x14]
@@ -1816,22 +1759,6 @@ _0800EFD6:
 	ldr r0, [r4, #0x14]
 	ldr r1, [r4, #0x1c]
 	mov r2, r12
-	.else
-	thumb_func_start sub_0800EEE6
-sub_0800EEE6:
-	nop
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_0800EEE6__c + 1
-	.thumb
-	.space 228
-	.endif
-
-	thumb_func_start sub_0800EFDC
-sub_0800EFDC: @ 0x0800EFDC
 	adds r0, r0, r1
 	asrs r0, r0, #1
 	str r0, [r4, #0x14]
@@ -1839,9 +1766,6 @@ sub_0800EFDC: @ 0x0800EFDC
 	cmp r0, #0
 	beq _0800F004
 	ldr r0, _0800F124
-
-	thumb_func_start sub_0800EFEA
-sub_0800EFEA: @ 0x0800EFEA
 	adds r5, r4, #0
 	ldr r6, [r0, #8]
 	adds r5, #0x10
@@ -1856,6 +1780,18 @@ sub_0800EFEA: @ 0x0800EFEA
 _0800F004:
 	adds r0, r4, #0
 	b _0800EEC4
+	.else
+	thumb_func_start sub_0800EEA8
+sub_0800EEA8:
+	bx pc
+	nop
+	.arm
+	ldr ip, [pc]
+	bx ip
+	.4byte sub_0800EEA8__c + 1
+	.thumb
+	.space 336
+	.endif
 
 	.ifndef DECOMP_sub_0800F008
 
@@ -2204,24 +2140,6 @@ sub_0800F1AE: @ 0x0800F1AE
 	ldr r6, _0800F3DC
 	adds r1, r0, #0
 	ldr r0, [r6, #4]
-	.else
-	thumb_func_start sub_0800F1AE
-sub_0800F1AE:
-	nop
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_0800F1AE__c + 1
-	.thumb
-	.space 44
-	.endif
-
-	.ifndef DECOMP_sub_0800F1EC
-
-	thumb_func_start sub_0800F1EC
-sub_0800F1EC: @ 0x0800F1EC
 	bl sub_080068B8
 	adds r2, r7, #0
 	adds r2, #8
@@ -2315,16 +2233,17 @@ _0800F2B0:
 	str r0, [r4, #0x20]
 	b _0800F2AC
 	.else
-	thumb_func_start sub_0800F1EC
-sub_0800F1EC:
+	thumb_func_start sub_0800F1AE
+sub_0800F1AE:
+	nop
 	bx pc
 	nop
 	.arm
 	ldr ip, [pc]
 	bx ip
-	.4byte sub_0800F1EC__c + 1
+	.4byte sub_0800F1AE__c + 1
 	.thumb
-	.space 186
+	.space 246
 	.endif
 
 	thumb_func_start sub_0800F2B6
@@ -2361,9 +2280,6 @@ _0800F2F0:
 	pop {r3, r4, r5, r6, r7, pc}
 _0800F2F2:
 	ldr r0, [r0, #0x10]
-
-	thumb_func_start sub_0800F2F4
-sub_0800F2F4: @ 0x0800F2F4
 	cmp r0, #0
 	beq _0800F346
 	ldr r0, [r2, #0x18]
@@ -2501,6 +2417,8 @@ _0800F3E8:
 _0800F3EC:
 	.4byte _08023E28
 
+	.ifndef DECOMP_sub_0800F3F0
+
 	thumb_func_start sub_0800F3F0
 sub_0800F3F0: @ 0x0800F3F0
 	push {r4, r5, r6, lr}
@@ -2510,18 +2428,10 @@ sub_0800F3F0: @ 0x0800F3F0
 	ldr r1, _0800F6C8
 	lsls r0, r0, #3
 	adds r4, r0, r1
-
-	thumb_func_start sub_0800F3FE
-sub_0800F3FE: @ 0x0800F3FE
 	ldr r0, _0800F6CC
 	ldr r0, [r0, #8]
 	adds r6, r0, r5
 	adds r6, #0xff
-
-	.ifndef DECOMP_sub_0800F406
-
-	thumb_func_start sub_0800F406
-sub_0800F406: @ 0x0800F406
 	adds r6, #0x21
 	ldrb r0, [r6, #0xb]
 	ldrb r1, [r4, #3]
@@ -2552,17 +2462,16 @@ _0800F436:
 	bl sub_08021D2A
 	pop {r4, r5, r6, pc}
 	.else
-	thumb_func_start sub_0800F406
-sub_0800F406:
-	nop
+	thumb_func_start sub_0800F3F0
+sub_0800F3F0:
 	bx pc
 	nop
 	.arm
 	ldr ip, [pc]
 	bx ip
-	.4byte sub_0800F406__c + 1
+	.4byte sub_0800F3F0__c + 1
 	.thumb
-	.space 40
+	.space 64
 	.endif
 
 	.ifndef DECOMP_sub_0800F440
@@ -2860,22 +2769,6 @@ _0800F5CA:
 	cmp r0, #0x15
 	beq _0800F5EA
 	cmp r0, #0x2b
-	.else
-	thumb_func_start sub_0800F592
-sub_0800F592:
-	nop
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_0800F592__c + 1
-	.thumb
-	.space 44
-	.endif
-
-	thumb_func_start sub_0800F5D0
-sub_0800F5D0: @ 0x0800F5D0
 	bne _0800F622
 _0800F5D2:
 	movs r3, #2
@@ -2892,22 +2785,13 @@ _0800F5D2:
 	b _0800F622
 _0800F5EA:
 	movs r3, #0
-
-	thumb_func_start sub_0800F5EC
-sub_0800F5EC: @ 0x0800F5EC
 	ldrsh r0, [r1, r3]
 	movs r3, #2
 	ldrsh r2, [r1, r3]
 	adds r0, #5
-
-	thumb_func_start sub_0800F5F4
-sub_0800F5F4: @ 0x0800F5F4
 	cmp r0, r2
 	ble _0800F5FC
 	strh r2, [r1]
-
-	thumb_func_start sub_0800F5FA
-sub_0800F5FA: @ 0x0800F5FA
 	b _0800F622
 _0800F5FC:
 	strh r0, [r1]
@@ -2944,6 +2828,19 @@ _0800F622:
 	bl sub_0801FC9C
 	movs r0, #1
 	pop {r3, r4, r5, pc}
+	.else
+	thumb_func_start sub_0800F592
+sub_0800F592:
+	nop
+	bx pc
+	nop
+	.arm
+	ldr ip, [pc]
+	bx ip
+	.4byte sub_0800F592__c + 1
+	.thumb
+	.space 148
+	.endif
 
 	thumb_func_start sub_0800F638
 sub_0800F638: @ 0x0800F638
@@ -3038,17 +2935,14 @@ _0800F6E4:
 sub_0800F6E8: @ 0x0800F6E8
 	ldr r0, _0800F774
 
+	.ifndef DECOMP_sub_0800F6EA
+
 	thumb_func_start sub_0800F6EA
 sub_0800F6EA: @ 0x0800F6EA
 	push {r4, lr}
 	ldr r1, [r0, #8]
 	ldrb r2, [r1]
 	lsls r3, r2, #3
-
-	.ifndef DECOMP_sub_0800F6F2
-
-	thumb_func_start sub_0800F6F2
-sub_0800F6F2: @ 0x0800F6F2
 	subs r2, r3, r2
 	lsls r2, r2, #2
 	adds r1, r2, r1
@@ -3060,22 +2954,6 @@ sub_0800F6F2: @ 0x0800F6F2
 	ldrh r3, [r1, #4]
 	ldrh r2, [r1, #6]
 	cmp r3, r2
-	.else
-	thumb_func_start sub_0800F6F2
-sub_0800F6F2:
-	nop
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_0800F6F2__c + 1
-	.thumb
-	.space 4
-	.endif
-
-	thumb_func_start sub_0800F708
-sub_0800F708: @ 0x0800F708
 	bne _0800F70E
 	movs r0, #0
 	pop {r4, pc}
@@ -3094,6 +2972,19 @@ _0800F70E:
 	bl sub_0801FC9C
 	movs r0, #1
 	pop {r4, pc}
+	.else
+	thumb_func_start sub_0800F6EA
+sub_0800F6EA:
+	nop
+	bx pc
+	nop
+	.arm
+	ldr ip, [pc]
+	bx ip
+	.4byte sub_0800F6EA__c + 1
+	.thumb
+	.space 48
+	.endif
 
 	thumb_func_start sub_0800F72C
 sub_0800F72C: @ 0x0800F72C
@@ -3240,6 +3131,22 @@ sub_0800F7CC: @ 0x0800F7CC
 	str r1, [r0, #0x30]
 	str r1, [r0, #0x34]
 	str r1, [r0, #0x38]
+	str r1, [r0, #0x3c]
+	movs r1, #1
+	str r1, [r0, #0x28]
+	ldrb r1, [r4, #0xc]
+	adds r0, #0x20
+	strb r1, [r0]
+	ldrb r1, [r4, #0xd]
+	strb r1, [r0, #1]
+	ldrb r1, [r4, #0xe]
+	strb r1, [r0, #2]
+	ldrb r1, [r4, #0xf]
+	strb r1, [r0, #3]
+	ldrb r1, [r4, #0x10]
+	strb r1, [r0, #4]
+	adds r0, r5, #0
+	pop {r3, r4, r5, pc}
 	.else
 	thumb_func_start sub_0800F7CC
 sub_0800F7CC:
@@ -3250,33 +3157,8 @@ sub_0800F7CC:
 	bx ip
 	.4byte sub_0800F7CC__c + 1
 	.thumb
-	.space 16
+	.space 48
 	.endif
-
-	thumb_func_start sub_0800F7EC
-sub_0800F7EC: @ 0x0800F7EC
-	str r1, [r0, #0x3c]
-	movs r1, #1
-	str r1, [r0, #0x28]
-	ldrb r1, [r4, #0xc]
-
-	thumb_func_start sub_0800F7F4
-sub_0800F7F4: @ 0x0800F7F4
-	adds r0, #0x20
-	strb r1, [r0]
-	ldrb r1, [r4, #0xd]
-	strb r1, [r0, #1]
-	ldrb r1, [r4, #0xe]
-
-	thumb_func_start sub_0800F7FE
-sub_0800F7FE: @ 0x0800F7FE
-	strb r1, [r0, #2]
-	ldrb r1, [r4, #0xf]
-	strb r1, [r0, #3]
-	ldrb r1, [r4, #0x10]
-	strb r1, [r0, #4]
-	adds r0, r5, #0
-	pop {r3, r4, r5, pc}
 
 	.ifndef DECOMP_sub_0800F80C
 
@@ -3419,6 +3301,31 @@ sub_0800F8B6: @ 0x0800F8B6
 	str r0, [sp, #8]
 	ldr r0, _0800F994
 	ldr r0, [r0, #4]
+	ldr r1, [r4, #0x38]
+	subs r1, r0, r1
+	cmp r1, #8
+	bge _0800F8FC
+	ldr r1, [r4, #0x3c]
+	cmp r1, #0
+	beq _0800F8FC
+	adds r0, r1, #0
+	ldr r1, [r1, #0x14]
+	adds r2, r1, r5
+	str r2, [r0, #0x14]
+	bl sub_08010124
+_0800F8F8:
+	add sp, #0x1c
+	pop {r4, r5, pc}
+_0800F8FC:
+	str r0, [r4, #0x38]
+	mov r0, sp
+	movs r3, #0
+	movs r2, #4
+	adds r1, r5, #0
+	adds r0, r0, r2
+	bl sub_080102A2
+	str r0, [r4, #0x3c]
+	b _0800F8F8
 	.else
 	thumb_func_start sub_0800F8B6
 sub_0800F8B6:
@@ -3430,69 +3337,7 @@ sub_0800F8B6:
 	bx ip
 	.4byte sub_0800F8B6__c + 1
 	.thumb
-	.space 22
-	.endif
-
-	.ifndef DECOMP_sub_0800F8DE
-
-	thumb_func_start sub_0800F8DE
-sub_0800F8DE: @ 0x0800F8DE
-	ldr r1, [r4, #0x38]
-	subs r1, r0, r1
-	cmp r1, #8
-	bge _0800F8FC
-	ldr r1, [r4, #0x3c]
-	cmp r1, #0
-	beq _0800F8FC
-	adds r0, r1, #0
-	ldr r1, [r1, #0x14]
-	.else
-	thumb_func_start sub_0800F8DE
-sub_0800F8DE:
-	nop
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_0800F8DE__c + 1
-	.thumb
-	.endif
-
-	thumb_func_start sub_0800F8F0
-sub_0800F8F0: @ 0x0800F8F0
-	adds r2, r1, r5
-	str r2, [r0, #0x14]
-	bl sub_08010124
-_0800F8F8:
-	add sp, #0x1c
-	pop {r4, r5, pc}
-_0800F8FC:
-	str r0, [r4, #0x38]
-
-	.ifndef DECOMP_sub_0800F8FE
-
-	thumb_func_start sub_0800F8FE
-sub_0800F8FE: @ 0x0800F8FE
-	mov r0, sp
-	movs r3, #0
-	movs r2, #4
-	adds r1, r5, #0
-	adds r0, r0, r2
-	bl sub_080102A2
-	str r0, [r4, #0x3c]
-	b _0800F8F8
-	.else
-	thumb_func_start sub_0800F8FE
-sub_0800F8FE:
-	nop
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_0800F8FE__c + 1
-	.thumb
+	.space 72
 	.endif
 
 	thumb_func_start sub_0800F910
@@ -3634,31 +3479,9 @@ sub_0800F9C6: @ 0x0800F9C6
 	adds r0, r4, #0
 	add r2, sp, #0x2c
 	add r3, sp, #8
-	.else
-	thumb_func_start sub_0800F9C6
-sub_0800F9C6:
-	nop
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_0800F9C6__c + 1
-	.thumb
-	.space 22
-	.endif
-
-	thumb_func_start sub_0800F9EE
-sub_0800F9EE: @ 0x0800F9EE
 	bl sub_0800B4AE
-
-	thumb_func_start sub_0800F9F2
-sub_0800F9F2: @ 0x0800F9F2
 	movs r0, #8
 	bl sub_0801F08C
-
-	thumb_func_start sub_0800F9F8
-sub_0800F9F8: @ 0x0800F9F8
 	cmp r0, #0
 	beq _0800FA02
 	ldr r1, _0800FA18
@@ -3677,6 +3500,19 @@ _0800FA14:
 	.4byte 0x03001FA8
 _0800FA18:
 	.4byte _08023E88
+	.else
+	thumb_func_start sub_0800F9C6
+sub_0800F9C6:
+	nop
+	bx pc
+	nop
+	.arm
+	ldr ip, [pc]
+	bx ip
+	.4byte sub_0800F9C6__c + 1
+	.thumb
+	.space 68
+	.endif
 
 	.ifndef DECOMP_sub_0800FA1C
 
@@ -3797,8 +3633,6 @@ sub_0800FA6C:
 	.space 82
 	.endif
 
-	.ifndef DECOMP_sub_0800FACE
-
 	thumb_func_start sub_0800FACE
 sub_0800FACE: @ 0x0800FACE
 	push {r3, r4, r5, r6, r7, lr}
@@ -3822,22 +3656,6 @@ sub_0800FACE: @ 0x0800FACE
 	cmp r0, r1
 	bge _0800FB5A
 	ldr r5, [r4, #0x30]
-	.else
-	thumb_func_start sub_0800FACE
-sub_0800FACE:
-	nop
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_0800FACE__c + 1
-	.thumb
-	.space 24
-	.endif
-
-	thumb_func_start sub_0800FAF8
-sub_0800FAF8: @ 0x0800FAF8
 	ldr r1, _0800FB68
 	ldr r0, [r5, #4]
 	adds r6, r4, #0
@@ -3984,25 +3802,7 @@ sub_0800FBAC: @ 0x0800FBAC
 	ldr r1, [r4, #8]
 	ldr r0, [r5]
 	ldrh r1, [r1, #4]
-	.else
-	thumb_func_start sub_0800FBAC
-sub_0800FBAC:
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_0800FBAC__c + 1
-	.thumb
-	.space 62
-	.endif
-
-	thumb_func_start sub_0800FBFA
-sub_0800FBFA: @ 0x0800FBFA
 	cmp r1, #0x5c
-
-	thumb_func_start sub_0800FBFC
-sub_0800FBFC: @ 0x0800FBFC
 	bne _0800FC02
 	movs r1, #3
 	b _0800FC04
@@ -4029,6 +3829,18 @@ _0800FC1A:
 _0800FC28:
 	add sp, #8
 	pop {r4, r5, r6, pc}
+	.else
+	thumb_func_start sub_0800FBAC
+sub_0800FBAC:
+	bx pc
+	nop
+	.arm
+	ldr ip, [pc]
+	bx ip
+	.4byte sub_0800FBAC__c + 1
+	.thumb
+	.space 112
+	.endif
 
 	thumb_func_start sub_0800FC2C
 sub_0800FC2C: @ 0x0800FC2C
@@ -4145,6 +3957,8 @@ sub_0800FC84:
 	.space 56
 	.endif
 
+	.ifndef DECOMP_sub_0800FCCC
+
 	thumb_func_start sub_0800FCCC
 sub_0800FCCC: @ 0x0800FCCC
 	push {r4, r5, r6, lr}
@@ -4169,20 +3983,11 @@ _0800FCEA:
 	ldr r0, _0800FF84
 	str r0, [r4]
 	ldr r0, _0800FF88
-
-	thumb_func_start sub_0800FCF6
-sub_0800FCF6: @ 0x0800FCF6
 	strh r1, [r4, #0xe]
-
-	thumb_func_start sub_0800FCF8
-sub_0800FCF8: @ 0x0800FCF8
 	ldr r0, [r0]
 	bl sub_080067AC
 	strh r0, [r4, #0xc]
 	ldr r0, _0800FF8C
-
-	thumb_func_start sub_0800FD02
-sub_0800FD02: @ 0x0800FD02
 	str r0, [r4]
 	str r5, [r4, #0x14]
 	ldr r0, [r5, #8]
@@ -4190,11 +3995,6 @@ sub_0800FD02: @ 0x0800FD02
 	ldm r6!, {r1, r2}
 	str r1, [r4, #0x18]
 	str r2, [r4, #0x1c]
-
-	.ifndef DECOMP_sub_0800FD10
-
-	thumb_func_start sub_0800FD10
-sub_0800FD10: @ 0x0800FD10
 	adds r0, r4, #0
 	adds r0, #0x18
 	adds r2, r0, #0
@@ -4218,16 +4018,16 @@ sub_0800FD10: @ 0x0800FD10
 	adds r0, r4, #0
 	b _0800FCE6
 	.else
-	thumb_func_start sub_0800FD10
-sub_0800FD10:
+	thumb_func_start sub_0800FCCC
+sub_0800FCCC:
 	bx pc
 	nop
 	.arm
 	ldr ip, [pc]
 	bx ip
-	.4byte sub_0800FD10__c + 1
+	.4byte sub_0800FCCC__c + 1
 	.thumb
-	.space 30
+	.space 98
 	.endif
 
 	.ifndef DECOMP_sub_0800FD3E
@@ -4364,6 +4164,18 @@ sub_0800FDE6: @ 0x0800FDE6
 	bl sub_08021D2A
 	cmp r0, #0
 	bne _0800FE00
+	cmp r4, #8
+	blt _0800FE00
+	movs r0, #2
+	pop {r4, pc}
+_0800FE00:
+	cmp r4, #9
+	blt _0800FE08
+	movs r0, #2
+	pop {r4, pc}
+_0800FE08:
+	movs r0, #0
+	pop {r4, pc}
 	.else
 	thumb_func_start sub_0800FDE6
 sub_0800FDE6:
@@ -4375,25 +4187,8 @@ sub_0800FDE6:
 	bx ip
 	.4byte sub_0800FDE6__c + 1
 	.thumb
+	.space 20
 	.endif
-
-	thumb_func_start sub_0800FDF8
-sub_0800FDF8: @ 0x0800FDF8
-	cmp r4, #8
-	blt _0800FE00
-	movs r0, #2
-
-	thumb_func_start sub_0800FDFE
-sub_0800FDFE: @ 0x0800FDFE
-	pop {r4, pc}
-_0800FE00:
-	cmp r4, #9
-	blt _0800FE08
-	movs r0, #2
-	pop {r4, pc}
-_0800FE08:
-	movs r0, #0
-	pop {r4, pc}
 
 	.ifndef DECOMP_sub_0800FE0C
 
@@ -4548,15 +4343,9 @@ _0800FEEE:
 _0800FEF0:
 	ldr r5, [r3]
 	movs r3, #1
-
-	thumb_func_start sub_0800FEF4
-sub_0800FEF4: @ 0x0800FEF4
 	lsls r3, r3, #0xc
 	add r3, sp
 	str r5, [r3, #0x14]
-
-	thumb_func_start sub_0800FEFA
-sub_0800FEFA: @ 0x0800FEFA
 	ldr r5, [r3, #0x18]
 	ldr r6, [r3, #0x28]
 	ldr r3, [sp, #8]
@@ -4719,6 +4508,8 @@ sub_0800FFC2:
 	.space 18
 	.endif
 
+	.ifndef DECOMP_sub_0800FFE6
+
 	thumb_func_start sub_0800FFE6
 sub_0800FFE6: @ 0x0800FFE6
 	push {r4, lr}
@@ -4728,19 +4519,11 @@ sub_0800FFE6: @ 0x0800FFE6
 	strh r1, [r3, #0x3c]
 	movs r3, #0
 	add r4, sp, #0x2c
-
-	thumb_func_start sub_0800FFF4
-sub_0800FFF4: @ 0x0800FFF4
 	movs r2, #0
 	stm r4!, {r1, r2, r3}
 	stm r4!, {r3}
 	subs r4, #0x10
 	mvns r1, r1
-
-	.ifndef DECOMP_sub_0800FFFE
-
-	thumb_func_start sub_0800FFFE
-sub_0800FFFE: @ 0x0800FFFE
 	str r4, [sp]
 	str r1, [sp, #8]
 	str r1, [sp, #0xc]
@@ -4769,17 +4552,17 @@ _08010022:
 _08010034:
 	.4byte _08023E88
 	.else
-	thumb_func_start sub_0800FFFE
-sub_0800FFFE:
+	thumb_func_start sub_0800FFE6
+sub_0800FFE6:
 	nop
 	bx pc
 	nop
 	.arm
 	ldr ip, [pc]
 	bx ip
-	.4byte sub_0800FFFE__c + 1
+	.4byte sub_0800FFE6__c + 1
 	.thumb
-	.space 40
+	.space 64
 	.endif
 
 	.ifndef DECOMP_sub_08010038
@@ -4914,26 +4697,19 @@ _080100E4:
 _080100E8:
 	.4byte _08024C48
 
+	.ifndef DECOMP_sub_080100EC
+
 	thumb_func_start sub_080100EC
 sub_080100EC: @ 0x080100EC
 	adds r2, r0, #0
-
-	thumb_func_start sub_080100EE
-sub_080100EE: @ 0x080100EE
 	adds r0, r1, #0
 	push {r3, lr}
 	ldrb r1, [r2, #4]
 	adds r1, #0xff
 	lsls r1, r1, #0x18
-
-	thumb_func_start sub_080100F8
-sub_080100F8: @ 0x080100F8
 	lsrs r1, r1, #0x18
 	strb r1, [r2, #4]
 	bne _08010104
-
-	thumb_func_start sub_080100FE
-sub_080100FE: @ 0x080100FE
 	bl sub_080076BC
 _08010102:
 	pop {r3, pc}
@@ -4947,6 +4723,18 @@ _08010104:
 	beq _08010102
 	bl sub_080076EE
 	b _08010102
+	.else
+	thumb_func_start sub_080100EC
+sub_080100EC:
+	bx pc
+	nop
+	.arm
+	ldr ip, [pc]
+	bx ip
+	.4byte sub_080100EC__c + 1
+	.thumb
+	.space 28
+	.endif
 
 	thumb_func_start sub_08010118
 sub_08010118: @ 0x08010118
@@ -5288,6 +5076,8 @@ _080102FC:
 _08010300:
 	.4byte 0x40006000
 
+	.ifndef DECOMP_sub_08010304
+
 	thumb_func_start sub_08010304
 sub_08010304: @ 0x08010304
 	push {r4, r5, lr}
@@ -5297,11 +5087,6 @@ sub_08010304: @ 0x08010304
 	movs r2, #0x10
 	movs r1, #0x20
 	adds r0, r5, #0
-
-	.ifndef DECOMP_sub_08010312
-
-	thumb_func_start sub_08010312
-sub_08010312: @ 0x08010312
 	bl sub_08020E5C
 	ldr r0, [r4, #0x14]
 	adds r1, r5, #0
@@ -5360,17 +5145,16 @@ _08010372:
 	add sp, #0x3c
 	pop {r4, r5, pc}
 	.else
-	thumb_func_start sub_08010312
-sub_08010312:
-	nop
+	thumb_func_start sub_08010304
+sub_08010304:
 	bx pc
 	nop
 	.arm
 	ldr ip, [pc]
 	bx ip
-	.4byte sub_08010312__c + 1
+	.4byte sub_08010304__c + 1
 	.thumb
-	.space 104
+	.space 120
 	.endif
 
 	.ifndef DECOMP_sub_0801038C
@@ -5452,6 +5236,8 @@ sub_080103E0:
 	.thumb
 	.endif
 
+	.ifndef DECOMP_sub_080103F0
+
 	thumb_func_start sub_080103F0
 sub_080103F0: @ 0x080103F0
 	ldr r2, _080104B4
@@ -5459,11 +5245,6 @@ sub_080103F0: @ 0x080103F0
 	ldr r2, [r2, #4]
 	ldr r3, _080104B8
 	lsls r2, r2, #0x18
-
-	.ifndef DECOMP_sub_080103FA
-
-	thumb_func_start sub_080103FA
-sub_080103FA: @ 0x080103FA
 	lsrs r2, r2, #0x16
 	ldr r2, [r3, r2]
 	ldr r3, [r1]
@@ -5518,17 +5299,16 @@ sub_080103FA: @ 0x080103FA
 	movs r0, #0
 	bx lr
 	.else
-	thumb_func_start sub_080103FA
-sub_080103FA:
-	nop
+	thumb_func_start sub_080103F0
+sub_080103F0:
 	bx pc
 	nop
 	.arm
 	ldr ip, [pc]
 	bx ip
-	.4byte sub_080103FA__c + 1
+	.4byte sub_080103F0__c + 1
 	.thumb
-	.space 88
+	.space 100
 	.endif
 
 	thumb_func_start sub_08010464
@@ -5789,21 +5569,6 @@ _080105CA:
 	lsls r7, r7, #0xa
 	strh r7, [r0, #0xa]
 	adds r0, r5, #0
-	.else
-	thumb_func_start sub_0801055C
-sub_0801055C:
-	bx pc
-	nop
-	.arm
-	ldr ip, [pc]
-	bx ip
-	.4byte sub_0801055C__c + 1
-	.thumb
-	.space 124
-	.endif
-
-	thumb_func_start sub_080105E8
-sub_080105E8: @ 0x080105E8
 	cmp r5, #0x3c
 	bge _0801060C
 	ldr r6, _0801067C
@@ -5815,9 +5580,6 @@ _080105F2:
 	adds r3, r3, r6
 	strb r1, [r2, r5]
 	ldr r5, [r3, #4]
-
-	thumb_func_start sub_080105FC
-sub_080105FC: @ 0x080105FC
 	adds r0, #1
 	strb r1, [r2, r5]
 	ldr r5, [r3, #8]
@@ -5842,6 +5604,18 @@ _08010620:
 	add sp, #8
 	movs r0, #0
 	pop {r4, r5, r6, r7, pc}
+	.else
+	thumb_func_start sub_0801055C
+sub_0801055C:
+	bx pc
+	nop
+	.arm
+	ldr ip, [pc]
+	bx ip
+	.4byte sub_0801055C__c + 1
+	.thumb
+	.space 188
+	.endif
 
 	.ifndef DECOMP_sub_08010628
 
@@ -6214,6 +5988,8 @@ sub_0801079C:
 	.space 40
 	.endif
 
+	.ifndef DECOMP_sub_080107D4
+
 	thumb_func_start sub_080107D4
 sub_080107D4: @ 0x080107D4
 	push {r4, lr}
@@ -6239,11 +6015,6 @@ _080107EC:
 	ldr r0, [r0, #4]
 	ldr r1, [r0]
 	ldr r2, [r1, #0x14]
-
-	.ifndef DECOMP_sub_080107FE
-
-	thumb_func_start sub_080107FE
-sub_080107FE: @ 0x080107FE
 	adds r1, r2, r1
 	bl sub_08021D2A
 	cmp r0, #0
@@ -6256,17 +6027,16 @@ sub_080107FE: @ 0x080107FE
 	bl sub_08021D2C
 	pop {r4, pc}
 	.else
-	thumb_func_start sub_080107FE
-sub_080107FE:
-	nop
+	thumb_func_start sub_080107D4
+sub_080107D4:
 	bx pc
 	nop
 	.arm
 	ldr ip, [pc]
 	bx ip
-	.4byte sub_080107FE__c + 1
+	.4byte sub_080107D4__c + 1
 	.thumb
-	.space 8
+	.space 52
 	.endif
 
 	thumb_func_start sub_08010818
