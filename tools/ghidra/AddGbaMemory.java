@@ -16,8 +16,8 @@ public class AddGbaMemory extends GhidraScript {
     }
     public void run() throws Exception {
         block("EWRAM", 0x02000000L, 0x40000, false);
-        // IWRAM after the RW image (0x03000000-0x03001003 comes from the ELF)
-        block("IWRAM_BSS", 0x03001004L, 0x8000 - 0x1004, false);
+        // IWRAM after the RW image (0x03000000-0x03000E7F comes from the ELF)
+        block("IWRAM_BSS", 0x03000E80L, 0x8000 - 0xE80, false);
         block("IO", 0x04000000L, 0x400, true);
         block("PALRAM", 0x05000000L, 0x400, false);
         block("VRAM", 0x06000000L, 0x18000, false);

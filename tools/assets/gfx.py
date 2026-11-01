@@ -11,9 +11,7 @@ colour (exact colours are kept exactly), so any editor works. The tile count mus
 import struct
 import numpy as np
 
-ROM = 0x08000000
-PAGE_TABLE = 0x179764
-PALETTE = 0x701B0
+from const import ROM, PAGE_TABLE, PALETTE
 
 
 def u32(d, o): return struct.unpack_from('<I', d, o)[0]

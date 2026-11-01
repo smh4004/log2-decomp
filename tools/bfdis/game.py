@@ -19,3 +19,5 @@ IMAGE_END = IWRAM[0] + IWRAM[2]
 
 # ranges that never contain pointers (fonts, PCM samples): [lo, hi, comment]
 NOPTR = [(num(r[0]), num(r[1])) for r in G.get('noptr', [])]
+CALL_VIA = num(G.get('call_via', 0))              # __call_via_r0 (8 x 'bx rN')
+SYNCPC = num(G.get('syncpc', 0))                  # harness frame sync point (after the VBlank wait loop)

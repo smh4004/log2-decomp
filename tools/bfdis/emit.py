@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Emit GNU-as source for the code area of Buu's Fury from the analyzer database.
+"""Emit GNU-as source for the code area from the analyzer database.
 
 Output is assembled with `.syntax unified`. Every emitted instruction is later verified
 byte-for-byte (tools/bfdis/verify.py); anything gas encodes differently is listed in

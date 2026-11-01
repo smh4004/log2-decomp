@@ -1,8 +1,8 @@
-# Dragon Ball Z: Buu's Fury (USA) -- matching disassembly
+# Dragon Ball Z: The Legacy of Goku II (USA) -- matching disassembly
 #   make               build log2.gba from asm/ + data/ (+ baserom.gba)
 #   make compare       check the SHA-1 against the original ROM
 #   make SHIFT=0x100   relocation test build (log2_shift.gba): padding after crt0 moves everything
-#   make extract       baserom.gba -> assets/ (editable text, palette, tables, map chunks)
+#   make extract       baserom.gba -> assets/ (editable events and text, palette, tables, maps, tiles, sprites)
 #   make modern        build log2_modern.gba from assets/ (edited assets recompressed; non-matching)
 #   make shift-test    build + headless comparison of SHIFT build vs matching build
 #   make patch         log2_modern.bps from your edits;  make verify-mods: toolkit self-test
@@ -129,7 +129,7 @@ modern: assets/manifest.json
 
 modern-rom: $(ROM)
 
-# share a hack: log2_modern.bps (apply it to an original Buu's Fury (USA) ROM)
+# share a hack: log2_modern.bps (apply it to an original Legacy of Goku II (USA) ROM)
 patch: modern
 	$(PYTHON) tools/bps.py make baserom.gba log2_modern.gba log2_modern.bps
 

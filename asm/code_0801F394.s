@@ -2,6 +2,7 @@
 	.include "asm/macros.inc"
 	.syntax unified
 	.text
+	.global WaitForVBlank
 	.global _0801F3AC
 	.global _0801F3B0
 	.global _0801F3B2
@@ -487,7 +488,6 @@
 	.global sub_08020BD8
 	.global sub_08020D24
 	.global sub_08020D26
-	.global sub_08020D40
 	.global sub_08020D90
 	.global sub_08020E5C
 	.global sub_08020EAA
@@ -1085,7 +1085,7 @@ _0801F622:
 	adds r2, r7, #0
 	adds r0, r6, #0
 	ldr r3, [r6, #0x20]
-	bl sub_08021D2E
+	bl __call_via_r3
 	subs r5, #1
 	bne _0801F622
 	pop {r3, r4, r5, r6, r7, pc}
@@ -1179,7 +1179,7 @@ _0801F6AE:
 	adds r0, r4, #0
 	ldr r3, [r4, #0x20]
 	add r2, sp, #4
-	bl sub_08021D2E
+	bl __call_via_r3
 	subs r6, #1
 	bne _0801F6AE
 _0801F6C0:
@@ -1359,7 +1359,7 @@ _0801F7B8:
 	adds r0, r4, #0
 	ldr r3, [r4, #0x20]
 	mov r2, sp
-	bl sub_08021D2E
+	bl __call_via_r3
 	subs r6, #1
 	bne _0801F7B8
 _0801F7CA:
@@ -1403,7 +1403,7 @@ sub_0801F7E2: @ 0x0801F7E2
 	str r2, [sp, #8]
 	ldr r3, [r0, #0x20]
 	add r2, sp, #4
-	bl sub_08021D2E
+	bl __call_via_r3
 	add sp, #0xc
 	pop {pc}
 	.else
@@ -1812,7 +1812,7 @@ _0801FA8A:
 	adds r1, r6, #0
 	adds r0, r4, #0
 	ldr r3, [r4, #0x18]
-	bl sub_08021D2E
+	bl __call_via_r3
 	str r7, [r4]
 _0801FAAC:
 	pop {r3, r4, r5, r6, r7, pc}
@@ -1836,7 +1836,7 @@ _0801FAAE:
 	adds r1, r6, #0
 	adds r0, r4, #0
 	ldr r3, [r4, #0x18]
-	bl sub_08021D2E
+	bl __call_via_r3
 	lsls r0, r7, #2
 	adds r6, r0, r6
 	ldr r0, [sp]
@@ -1857,7 +1857,7 @@ _0801FAF0:
 	adds r1, r6, #0
 	adds r0, r4, #0
 	ldr r3, [r4, #0x18]
-	bl sub_08021D2E
+	bl __call_via_r3
 	str r7, [r4]
 _0801FB04:
 	b _0801FAAC
@@ -1882,7 +1882,7 @@ _0801FB06:
 	adds r1, r6, #0
 	adds r0, r4, #0
 	ldr r3, [r4, #0x18]
-	bl sub_08021D2E
+	bl __call_via_r3
 	lsls r0, r7, #2
 	adds r6, r0, r6
 	ldr r0, [sp]
@@ -1915,7 +1915,7 @@ _0801FB54:
 	adds r1, r6, #0
 	adds r0, r4, #0
 	ldr r3, [r4, #0x18]
-	bl sub_08021D2E
+	bl __call_via_r3
 	str r7, [r4]
 	b _0801FAAC
 _0801FB72:
@@ -1938,7 +1938,7 @@ _0801FB72:
 	adds r2, r7, #0
 	adds r0, r4, #0
 	ldr r3, [r4, #0x18]
-	bl sub_08021D2E
+	bl __call_via_r3
 	lsls r0, r7, #2
 	adds r6, r0, r6
 	ldr r0, [sp]
@@ -1959,7 +1959,7 @@ _0801FBAC:
 	adds r1, r6, #0
 	adds r0, r4, #0
 	ldr r3, [r4, #0x18]
-	bl sub_08021D2E
+	bl __call_via_r3
 	str r7, [r4]
 	b _0801FAAC
 _0801FBCA:
@@ -1972,7 +1972,7 @@ _0801FBCA:
 	adds r1, r6, #0
 	adds r0, r4, #0
 	ldr r3, [r4, #0x18]
-	bl sub_08021D2E
+	bl __call_via_r3
 	movs r0, #0
 	strb r0, [r4, #0x10]
 	ldr r0, [r4, #0x2c]
@@ -3882,7 +3882,7 @@ sub_08020566: @ 0x08020566
 	strb r1, [r4, #4]
 	adds r0, r1, #0
 	ldr r1, _080206E4
-	bl sub_08021F30
+	bl __16__rt_sdiv
 	strh r0, [r4, #6]
 	pop {r4, pc}
 	.else
@@ -3912,7 +3912,7 @@ sub_08020578: @ 0x08020578
 	adds r5, #0x50
 	ldrb r0, [r5, #0xe]
 	strb r0, [r4, #4]
-	bl sub_08021F30
+	bl __16__rt_sdiv
 	strh r0, [r4, #6]
 	pop {r3, r4, r5, pc}
 	.else
@@ -4362,7 +4362,7 @@ _080207F8:
 	ldr r2, _08020990
 	lsls r1, r1, #2
 	ldr r1, [r2, r1]
-	bl sub_08021D2A
+	bl __call_via_r1
 _08020802:
 	pop {r3, pc}
 	.else
@@ -4394,7 +4394,7 @@ sub_08020804: @ 0x08020804
 	bpl _0802081E
 _08020818:
 	ldr r1, [r0, #0x54]
-	bl sub_08021D2A
+	bl __call_via_r1
 _0802081E:
 	pop {r3, pc}
 	.else
@@ -4601,7 +4601,7 @@ _08020940:
 	bpl _08020962
 _0802095C:
 	ldr r1, [r0, #0x54]
-	bl sub_08021D2A
+	bl __call_via_r1
 _08020962:
 	adds r5, #1
 	cmp r5, #0xf
@@ -4816,7 +4816,7 @@ _08020A66:
 	ldrb r0, [r1, #0x10]
 	ldr r1, _08020AF0
 	strb r0, [r4, #4]
-	bl sub_08021F30
+	bl __16__rt_sdiv
 	strh r0, [r4, #6]
 	strb r5, [r4, #5]
 	pop {r4, r5, r6, pc}
@@ -5002,7 +5002,7 @@ sub_08020B8C: @ 0x08020B8C
 	movs r1, #1
 	lsls r1, r1, #0xa
 	ldr r0, [r0]
-	bl sub_08020D40
+	bl WaitForVBlank
 	ldr r1, _08020D14
 	movs r0, #0
 	strh r0, [r1, #2]
@@ -5044,7 +5044,7 @@ sub_08020BBA: @ 0x08020BBA
 	movs r1, #1
 	lsls r1, r1, #0xa
 	ldr r0, [r0]
-	bl sub_08020D40
+	bl WaitForVBlank
 	ldr r1, _08020D14
 	movs r0, #0
 	strh r0, [r1, #2]
@@ -5273,8 +5273,8 @@ sub_08020D26:
 	.space 8
 	.endif
 
-	thumb_func_start sub_08020D40
-sub_08020D40: @ 0x08020D40
+	thumb_func_start WaitForVBlank
+WaitForVBlank: @ 0x08020D40
 	push {r3, r4, r5, lr}
 	adds r4, r0, #0
 	adds r5, r1, #0
@@ -6365,7 +6365,7 @@ sub_08021388: @ 0x08021388
 _080213A0:
 	adds r1, r6, #0
 	ldr r0, [r5]
-	bl sub_08020D40
+	bl WaitForVBlank
 	adds r4, #1
 	cmp r4, #0x1e
 	blt _080213A0
@@ -6390,7 +6390,7 @@ _080213A0:
 _080213D2:
 	adds r1, r6, #0
 	ldr r0, [r5]
-	bl sub_08020D40
+	bl WaitForVBlank
 	ldr r0, [r5, #8]
 	bl sub_0801EEFC
 	ldr r0, [r5, #8]

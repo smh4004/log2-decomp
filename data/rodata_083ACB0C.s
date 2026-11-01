@@ -12587,7 +12587,7 @@ gUnknown_083B5D28:
 	.4byte sub_08009C54 + 1
 	.4byte sub_08009C7A + 1
 	.4byte sub_08009C8A + 1
-	.4byte sub_08009CBA + 1
+	.incbin "baserom.gba", 0x3B5DF0, 0x4
 	.4byte sub_08009CC4 + 1
 	.4byte sub_08009D00 + 1
 	.4byte sub_08009D4A + 1

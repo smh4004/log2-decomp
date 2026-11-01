@@ -1,6 +1,6 @@
-"""Webfoot compression ("WFZ") used by Buu's Fury.
+"""Webfoot compression ("WFZ") used by Legacy of Goku II and Buu's Fury.
 
-Ported from the ARM routine the game copies to IWRAM 0x03000040 (ROM 0x7B79E4).
+Ported from the ARM routine the game copies to IWRAM (Legacy of Goku II: 0x03000000, Buu's Fury: 0x03000040).
 Container: u32 type (0 = stored, 1/2 = compressed), u32 decompressed size, then a
 32-bit-word bitstream (little-endian words, bits consumed MSB-first).
 aPLib-like: 0=literal, 10=gamma match, 110=7-bit short match, 111=4-bit/special.

@@ -1,3 +1,14 @@
 # address  name        -- known symbols (edit freely; rerun tools/bfdis/gen.py)
 # Code
 080000C0 _start                 # crt0 (ARM)
+08020D40 WaitForVBlank          # game loop frame wait (svc 2 until the IRQ flag is set); harness syncpc = 0x08020D78
+08021D28 __call_via_r0          # ADS indirect-call stubs (bx rN)
+08021D2A __call_via_r1
+08021D2C __call_via_r2
+08021D2E __call_via_r3
+08021D30 __call_via_r4
+08021D32 __call_via_r5
+08021D34 __call_via_r6
+08021D36 __call_via_r7
+08021F30 __16__rt_sdiv          # Thumb entry (bx pc) of ARM signed divide; r0 = divisor, r1 = dividend
+08021F34 __rt_sdiv

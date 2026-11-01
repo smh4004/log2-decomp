@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""WFZ compressor for Buu's Fury: the inverse of tools/wfz/wfz.py (the game's own decoder, ported).
+"""WFZ compressor: the inverse of tools/wfz/wfz.py (the game's own decoder, ported).
 
 Bitstream: 32-bit little-endian words, bits consumed MSB-first. Commands (decoder view):
   1  + bits(r3)                          literal (r3=8 after the mode switch we emit first)

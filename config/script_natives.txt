@@ -1,0 +1,145 @@
+# Script native names for Legacy of Goku II (gScriptNativeFuncs, 0x083B5D28, 145 entries).
+# Used by tools/scripts (disassembly output and `call NAME(...)` input); renaming never changes the built ROM.
+# Format: id name  # (args in pushed order) -- evidence. "(guess)" = plausible but not proven.
+# Actor ids go through sub_08009370: 0 = the player, other ids = NPC/map actors.
+# Characters (cur_char / char args): 0 Gohan, 1 Piccolo, 2 Vegeta, 3 Trunks, 4 Goku (from level-up/skill texts).
+# Character records: 0x03000E9C + char*0x1C (+0 hp, +2 max_hp, +4 ki, +6 max_ki, +8 form, +0x10 exp, +0x14 flags).
+#
+# Variables 0x00-0x10 (getter = native, setter = gScriptSetterFuncs 0x083B5F70):
+#   0x00-0x03  reg0..reg3  global script registers DAT_03001FB0..FBC (read/write, persist between scripts)
+#   0x04-0x07  arg0..arg3  words of the parameter block passed to ScriptVM_Run (DAT_03001FAC; a 16-byte scratch if none)
+#   0x08       map_world   DAT_03002080 (current map group; read-only setter "Unable to set variable")
+#   0x09       map_area    DAT_03002081 (current map number within the group; read-only)
+#   0x0A       map_entry   DAT_03002082 (entry/layout index chosen when the map loaded; read-only) (guess)
+#   0x0B       cur_char    DAT_03000E90, index of the character being played (read-only)
+#   0x0C       char_name   name string of the current character (table 0x080E2840[cur+0x30]), used as %s
+#   0x0D       hp          current char HP (setter clamps to 0..max_hp)
+#   0x0E       max_hp      setter also clamps hp
+#   0x0F       ki          current char energy (setter clamps to 0..max_ki)
+#   0x10       max_ki
+# id   name                # args (pushed order) -- evidence / what it does
+0x00   reg0                # var: global register DAT_03001FB0
+0x01   reg1                # var: DAT_03001FB4
+0x02   reg2                # var: DAT_03001FB8
+0x03   reg3                # var: DAT_03001FBC
+0x04   arg0                # var: *(DAT_03001FAC + 0), VM parameter block
+0x05   arg1                # var: *(DAT_03001FAC + 4)
+0x06   arg2                # var: *(DAT_03001FAC + 8)
+0x07   arg3                # var: *(DAT_03001FAC + 12)
+0x08   map_world           # var: DAT_03002080; death script tests map_world == 6 && map_area == 70
+0x09   map_area            # var: DAT_03002081
+0x0A   map_entry           # var: DAT_03002082 (guess)
+0x0B   cur_char            # var: DAT_03000E90 current character index
+0x0C   char_name           # var: current character's display name pointer ("%s has achieved Level %d!")
+0x0D   hp                  # var: char +0 (setter sub_0800B0A0 clamps to max_hp)
+0x0E   max_hp              # var: char +2 (setter lowers hp if above)
+0x0F   ki                  # var: char +4 (clamped to max_ki like hp)
+0x10   max_ki              # var: char +6
+0x11   random              # (n) -> rng * n >> 16, i.e. 0..n-1
+0x12   chance              # (percent) -> 1 if rng16 < percent*655.36
+0x13   get_flag            # (flag) -> bit flag of story bitfield at 0x03000E90+0xB4 (sub_08003E42)
+0x14   flag_clear          # (flag) -> 1 - get_flag(flag)
+0x15   item_count          # (item) -> inventory byte 0x03000FBB[item] + count reported by objects (msg 0x17); "Golden Capsule" checks item_count(17) < 2
+0x16   get_level           # (char) -> level from exp table 0x081D9834 (sub_08004214); used in "%s has achieved Level %d!"
+0x17   get_map_flag        # (a, b) -> per-map object bit (table 0x086F6C7C, bits at state+0xE7); pair of set_map_flag (guess: chests/pickups)
+0x18   hide_bg             # (bg) -> clears DISPCNT bit 0x100<<bg
+0x19   show_bg             # (bg) -> sets DISPCNT bit 0x100<<bg
+0x1A   give_item           # (item) -> calls item table 0x086ADE24 entry handler (+0x34); followed by "You found a Dragon Ball!" / "...Access Card!"
+0x1B   set_flag            # (flag) -> sets story flag bit (sub_08003E5E)
+0x1C   clear_flag          # (flag) -> clears story flag bit (sub_08003E74)
+0x1D   signal_on           # (n) -> broadcast object message 4 with 2n+1 (guess: toggles map object/switch state n)
+0x1E   signal_off          # (n) -> broadcast object message 4 with 2n (guess)
+0x1F   pan_camera          # (x, y, speed) -> camera mode 0x030020C8 scrolls to x,y; blocks until done
+0x20   pan_camera_to       # (actor, speed) -> pans camera so actor's center is on screen center (-120,-80)
+0x21   camera_follow       # (actor) -> camera target = actor (DAT_03000FF4 = 0x030020C0)
+0x22   push_map            # () -> DAT_03001FC4 = 1: next load_scene saves the current map/objects for pop_map
+0x23   load_scene          # (world, area, entry, x, y) -> fades out, loads map with camera at x,y and spawns its actors; used for flashbacks
+0x24   load_scene_empty    # (world, area, entry, x, y) -> as load_scene but without spawning the map's actors
+0x25   pop_map             # () -> fades out, restores the map saved by push_map, fades in
+0x26   teleport            # (world, area, _, x, y) -> fade, load map with player at x,y, player anim 0x26 + fade-in effect; used by the 13-destination warp menu
+0x27   warp                # (world, area, _, x, y) -> loads map and places player at x,y without fade (third arg ignored)
+0x28   fade_out            # (frames) -> palette fades to black (vtable 0x08024F94); "You have died!" -> fade_out(240)
+0x29   fade_in             # (frames) -> palette from black to normal (vtable 0x0802542C)
+0x2A   fade_out_white      # (frames) -> palette fades to white (sub_0800DB18)
+0x2B   fade_in_white       # (frames) -> palette from white to normal (sub_0800BE7A)
+0x2C   flash_white         # (frames) -> white up then back down over 2*frames (sub_0800DC64)
+0x2D   reset_obj_palette   # () -> DMA 0x081DA6C8 to OBJ palette 0x05000200 (guess: restore default sprite palette)
+0x2E   play_sfx            # (n) -> starts sound 0x080E15B0 + n*12 at volume 0x40
+0x2F   stop_sfx            # (n) -> stops channel playing sound n
+0x30   stop_all_sfx        # () -> clears all 16 sound channels
+0x31   play_music          # (n) -> starts song 0x081D4B2C + n*5 unless already playing
+0x32   stop_music          # () -> DAT_030026CD = 0 (music engine off)
+0x33   spawn_actor         # (id, x, y) -> creates actor object for id at x,y (sub_0800D6DE); scripts then walk it
+0x34   remove_actor        # (actor) -> queued: calls actor +0x30 and removes it from object list
+0x35   walk_to             # (actor, x, y) -> queued move at speed 0x100 (sub_0800D584)
+0x36   fly_to              # (actor, x, y) -> queued move at speed 0x200 with anim 0xC; usually after play_sfx(26) (guess: flying)
+0x37   face                # (actor, dir) -> queued: actor dir byte +0x10 = dir (0 down, 1 up, 2/3 sides)
+0x38   face_actor          # (actor, target) -> queued: sets dir toward target by position delta
+0x39   play_anim           # (actor, anim) -> queued: actor->set_anim(anim), waits until it finishes
+0x3A   actor_wait          # (actor, frames) -> queued countdown in the actor's command list
+0x3B   character_special_attack # (2 args) -- deprecated stub, string "CharacterSpecialAttack() is deprecated"
+0x3C   wait_hit            # (actor) -> queued: waits until an object answers msg 0x11 for the actor's rect (guess: until hit by a blast)
+0x3D   character_follow    # (2 args) -- deprecated stub, string "CharacterFollow() is deprecated"
+0x3E   set_actor_pos       # (actor, x, y) -> queued: sets actor position (x<<8, y<<8) instantly
+0x3F   begin_moves         # () -> DAT_030020F8 = 1: queued actor commands no longer block
+0x40   wait_moves          # () -> runs/waits for all queued actor commands, then clears the flag
+0x41   quake               # (a, b) -> rumble sfx 0x080E17B4 + camera shake (0x030020DC), blocks until done
+0x42   show_image          # (1 arg) -- deprecated stub, string "ShowImage() is deprecated"
+0x43   wait_button         # () -> blocks until A or B pressed (DAT_030022B0 bits 0/1); used after "You have died!"
+0x44   delay               # (frames) -> blocking countdown task like wait, other task base (guess; unused by events)
+0x45   wait                # (frames) -> blocking countdown task (vtable 0x0802585C); called with 60/120/180
+0x46   switch_char         # (char) -> set_char(char) then reverts temporary forms of the other characters
+0x47   block_rect          # (x1, y1, x2, y2) -> sets bits in collision maps DAT_030010FC/DAT_03001104 (same as solid objects)
+0x48   unblock_rect        # (x1, y1, x2, y2) -> clears those collision bits
+0x49   set_form            # (char, form) -> char form index = entry of form table 0x081D967D with that id
+0x4A   refresh_map         # () -> rebuilds the map's flag-dependent object lists (sub_0800C2F8); used right after set_flag
+0x4B   speaker_name        # () -> pushes current char's speaker name (table 0x080E2840[cur+0x36]) for "%s: ..." lines
+0x4C   take_item           # (item) -> inventory 0x03000FBB[item] -= 1
+0x4D   take_items          # (item, count) -> inventory[item] -= count
+0x4E   set_bgcnt           # (bg, value) -> BGxCNT = layout base + value (guess: priority)
+0x4F   join_party          # (char) -> char flags |= 1 (characters with bit 0 are listed in the menu)
+0x50   enable_switch       # (char) -> char flags |= 2; join_party(1)+enable_switch(1) precede "Save Points ... change to a different character!" (guess)
+0x51   disable_switch      # (char) -> char flags &= ~2 (guess)
+0x53   learn_skill         # (char, n) -> char flags |= 4<<n; learn_skill(0,1) before "Gohan can now use the Masenko Ha!"
+0x54   spawn_map_actor     # (n) -> spawns entry n of the current map's actor list
+0x55   boss_ai             # (actor) -> attaches object 0x08025748 to actor with (0,100); called as the boss fight starts (guess)
+0x56   show_hud            # (on) -> state bit 0x02 of DAT_03000E91; on spawns object 0x08008B14, off broadcasts msg 0x12 (guess: HUD/combat mode)
+0x58   kill_enemies        # () -> broadcast object msg 0x10; used after a boss is removed, before give_exp (guess)
+0x59   move_to_actor       # (actor, target, dx, dy) -> queued move toward target position + offset (guess)
+0x5A   boss_ai_ex          # (actor, a, b) -> as boss_ai with explicit values (guess)
+0x5B   leave_party         # (char) -> char flags &= ~1
+0x5D   explode_actor       # (actor) -> queued: effect 0x27 at actor center (guess: explosion)
+0x5E   explode_offset      # (actor, dx, dy) -> queued: effect 0x27 at actor center + offset; followed by sfx in battle scenes (guess)
+0x5F   actor_hurt          # (actor) -> queued: sets actor state 0xC (guess: hurt/knockback)
+0x60   shoot_at_actor      # (actor, target, speed) -> queued projectile command toward target (guess)
+0x61   game_over           # () -> tears down the scene and restarts the main loop; end of the death script (guess)
+0x62   raise_level         # (char, level) -> raises char to level (max 50) if lower, via exp
+0x63   shoot_at            # (actor, x, y, speed) -> queued projectile to x,y; followed by explode_at (guess)
+0x64   explode_at          # (actor, x, y) -> queued: effect 0x27 at x,y, then play_sfx(20) (guess)
+0x68   replace_actor       # (actor, n) -> removes actor and spawns map actor n at its position/direction
+0x69   get_hp              # (char) -> char +0
+0x6A   get_ki              # (char) -> char +4
+0x6B   get_max_hp          # (char) -> char +2
+0x6C   get_max_ki          # (char) -> char +6
+0x6D   set_hp              # (char, value) -> char +0
+0x6E   set_ki              # (char, value) -> char +4
+0x6F   play_sfx_vol        # (n, volume) -> like play_sfx with explicit volume
+0x70   actor_sfx           # (actor, n) -> queued play_sfx(n) in the actor's command list
+0x73   set_char            # (char) -> DAT_03000E90 = char, rebuilds the player sprite (no form reset)
+0x74   revert_forms        # () -> other characters in temporary forms go back to base form (sub_08003ED4)
+0x75   block_rect2         # (x1, y1, x2, y2) -> sets bits in collision map DAT_03001100 (guess: second layer)
+0x76   unblock_rect2       # (x1, y1, x2, y2) -> clears bits in DAT_03001100 (guess)
+0x77   camera_fixed        # () -> camera stops following (DAT_03000FF4 = 0x030020F4, as after load_scene)
+0x79   set_anim            # (actor, anim) -> queued: set_anim without waiting
+0x7E   is_transformed      # () -> 1 if current char's form has flag bit 0 (forms revert_forms undoes) (guess)
+0x80   set_map_flag        # (a, b) -> sets the bit get_map_flag tests (guess)
+0x83   bonus_str           # () -> DAT_03001FC1, "Attribute Bonus Strength: +%d"
+0x84   bonus_pow           # () -> DAT_03001FC2, "Power: +%d"
+0x85   bonus_end           # () -> DAT_03001FC3, "Endurance: +%d"
+0x86   shake_screen        # (actor, a, b) -> queued camera shake (0x030020DC), waits until it ends
+0x87   flash_color         # (actor, r, g, b, frames) -> queued palette tint toward r,g,b and back
+0x88   move_speed          # (actor, x, y, speed) -> queued move with speed*0x290>>8
+0x8A   sleep_mode          # () -> sub_08021388; between "To awaken from Sleep Mode..." and "Sleep Mode ended."
+0x8B   give_exp            # (amount) -> adds exp to cur_char, shows level-up event on level change
+0x8F   get_actor_pos       # (actor) -> x<<16 | y
+0x90   walk_to_pos         # (actor, packed) -> walk_to with packed x<<16 | y

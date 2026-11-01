@@ -15,6 +15,7 @@
 	.global _080042D4
 	.global _080042EC
 	.global _080042F0
+	.global _080042F4
 	.global _08004310
 	.global _0800435E
 	.global _08004362
@@ -376,7 +377,6 @@
 	.global sub_08004276
 	.global sub_08004284
 	.global sub_080042BC
-	.global sub_080042F4
 	.global sub_08004348
 	.global sub_080043E8
 	.global sub_08004624
@@ -640,7 +640,7 @@ _080042D4:
 	movs r3, #0
 	movs r2, #0xff
 	adds r2, #0xce
-	adr r1, sub_080042F4
+	adr r1, _080042F4
 	adr r0, _08004310
 	bl sub_0801F878
 	pop {r4, pc}
@@ -650,52 +650,14 @@ _080042EC:
 	.4byte gUnknown_081D9834
 _080042F0:
 	.4byte gUnknown_081D967C
-
-	thumb_func_start sub_080042F4
-sub_080042F4: @ 0x080042F4
-	subs r2, #0x4b
-	strh r4, [r3, r5]
-	strb r7, [r5, #0x15]
-	str r2, [r6, #0x34]
-	ldrb r5, [r4, r1]
-	ldr r3, [r0, #4]
-	strb r1, [r4, #9]
-	str r1, [r4, #0x34]
-	str r4, [r6, #0x54]
-	add r2, lr
-	strb r1, [r4, #0x11]
-	cmp r6, #0x61
-	strb r3, [r4, #1]
-	lsls r0, r6, #1
+_080042F4:
+	.byte 0x4B, 0x3A, 0x5C, 0x53, 0x6F, 0x75, 0x72, 0x63, 0x65, 0x5C, 0x43, 0x68, 0x61, 0x72, 0x61, 0x63
+	.byte 0x74, 0x65, 0x72, 0x44, 0x61, 0x74, 0x61, 0x2E, 0x63, 0x70, 0x70, 0x00
 _08004310:
-	ldr r5, [r2, #0x64]
-	str r1, [r4, #0x24]
-	str r4, [r5, #0x54]
-	strb r0, [r4, #0x10]
-	movs r0, #0x6f
-	ldr r6, [r4, #0x14]
-	str r6, [r5, #0x44]
-	strb r0, [r4, #0xc]
-	strb r0, [r6, #9]
-	strb r1, [r5, #0x11]
-	movs r0, #0x65
-	ldr r1, [r5, #0x64]
-	str r4, [r4, #0x54]
-	movs r0, #0x78
-	ldr r1, [r5, #0x64]
-	str r0, [r4, #0x30]
-	str r0, [r5, #0x14]
-	str r2, [r6, #0x14]
-	strb r3, [r4, #0x11]
-	strb r5, [r4, #9]
-	str r0, [r4, #0x40]
-	strb r1, [r5, #0xd]
-	ldr r0, [r6, #0x44]
-	ldrb r1, [r4, #5]
-	str r0, [r4, #0x40]
-	strb r1, [r4, #0x11]
-	lsrs r1, r4, #9
-	movs r0, r0
+	.byte 0x55, 0x6E, 0x61, 0x62, 0x6C, 0x65, 0x20, 0x74, 0x6F, 0x20, 0x66, 0x69, 0x6E, 0x64, 0x20, 0x73
+	.byte 0x70, 0x72, 0x69, 0x74, 0x65, 0x20, 0x69, 0x6E, 0x64, 0x65, 0x78, 0x20, 0x69, 0x6E, 0x20, 0x63
+	.byte 0x68, 0x61, 0x72, 0x61, 0x63, 0x74, 0x65, 0x72, 0x20, 0x64, 0x69, 0x73, 0x70, 0x6C, 0x61, 0x79
+	.byte 0x20, 0x64, 0x61, 0x74, 0x61, 0x0A, 0x00, 0x00
 
 	.ifndef DECOMP_sub_08004348
 
@@ -1145,7 +1107,7 @@ sub_0800463A: @ 0x0800463A
 	ldr r1, [r4, #4]
 	ldr r0, [r4, #8]
 	ldr r1, [r1, #0x30]
-	bl sub_08021D2A
+	bl __call_via_r1
 	cmp r0, #1
 	beq _080046A8
 	cmp r0, #2
@@ -1190,7 +1152,7 @@ _080046E6:
 	adds r0, r5, #0
 	ldr r2, [r1, #4]
 	adds r1, r2, r1
-	bl sub_08021D2A
+	bl __call_via_r1
 _080046F2:
 	b _080046FC
 _080046F4:
@@ -1442,7 +1404,7 @@ sub_08004788: @ 0x08004788
 	ldr r1, [r0]
 	adds r1, r1, r0
 	adds r0, r6, #0
-	bl sub_08021D2A
+	bl __call_via_r1
 	movs r0, #0xc
 	str r0, [sp, #0x44]
 	movs r0, #9
@@ -1469,7 +1431,7 @@ sub_08004788: @ 0x08004788
 	ldr r1, [r0]
 	adds r1, r1, r0
 	adds r0, r4, #0
-	bl sub_08021D2A
+	bl __call_via_r1
 	movs r0, #0x39
 	lsls r0, r0, #7
 	lsls r1, r7, #0x17
@@ -1889,7 +1851,7 @@ sub_08004B1C: @ 0x08004B1C
 	ldr r3, _08004C88
 	adds r3, #0xc
 	ldr r3, [r3, r2]
-	bl sub_08021D2E
+	bl __call_via_r3
 	pop {r3, pc}
 	.else
 	thumb_func_start sub_08004B1C
@@ -2401,12 +2363,12 @@ sub_08004EA8: @ 0x08004EA8
 	ldr r1, [r0]
 	ldr r2, [r1]
 	adds r1, r2, r1
-	bl sub_08021D2A
+	bl __call_via_r1
 	ldr r1, [r4]
 	adds r0, r4, #0
 	ldr r2, [r1, #0x1c]
 	adds r1, r2, r1
-	bl sub_08021D2A
+	bl __call_via_r1
 	ldr r0, _08004F10
 	ldr r0, [r0, #4]
 	bl sub_08006AD8
@@ -2414,7 +2376,7 @@ sub_08004EA8: @ 0x08004EA8
 	adds r0, r4, #0
 	ldr r2, [r1, #0x20]
 	adds r1, r2, r1
-	bl sub_08021D2A
+	bl __call_via_r1
 	pop {r4, pc}
 	.else
 	thumb_func_start sub_08004EA8
@@ -2438,7 +2400,7 @@ sub_08004EDC: @ 0x08004EDC
 	adds r4, r0, #0
 	ldr r2, [r1, #0x24]
 	adds r1, r2, r1
-	bl sub_08021D2A
+	bl __call_via_r1
 	ldr r0, _08004F10
 	ldr r0, [r0]
 	bl sub_08006250
@@ -2446,7 +2408,7 @@ sub_08004EDC: @ 0x08004EDC
 	adds r0, r4, #0
 	ldr r2, [r1, #0x28]
 	adds r1, r2, r1
-	bl sub_08021D2A
+	bl __call_via_r1
 	pop {r4, pc}
 	.else
 	thumb_func_start sub_08004EDC
@@ -2538,7 +2500,7 @@ sub_08004F32: @ 0x08004F32
 	ldr r2, [r1, #8]
 	adds r2, r2, r1
 	adds r1, r6, #0
-	bl sub_08021D2C
+	bl __call_via_r2
 	movs r3, #1
 	lsls r3, r3, #0xb
 	add sp, r3
@@ -2657,7 +2619,7 @@ sub_08004FF8: @ 0x08004FF8
 	str r0, [r4, #8]
 	str r2, [r4, #4]
 	ldr r0, [r1, #4]
-	bl sub_08021D28
+	bl __call_via_r0
 	str r0, [r4, #0xc]
 	adds r0, r4, #0
 	pop {r4, pc}
@@ -3077,13 +3039,13 @@ _08005248:
 	ldr r2, [r1]
 	adds r2, r2, r1
 	movs r1, #1
-	bl sub_08021D2C
+	bl __call_via_r2
 _0800525C:
 	adds r0, r5, r7
 	ldr r1, [r0, #0x14]
 	adds r0, r4, #0
 	ldr r2, [r1]
-	bl sub_08021D2C
+	bl __call_via_r2
 	adds r4, #1
 	cmp r4, #4
 	str r0, [r6, r5]
@@ -3117,7 +3079,7 @@ _0800527A:
 	ldr r2, [r1, #4]
 	adds r2, r2, r1
 	adds r1, r6, #0
-	bl sub_08021D2C
+	bl __call_via_r2
 	adds r4, #1
 	cmp r4, #4
 	blt _0800527A
@@ -3151,7 +3113,7 @@ _0800529A:
 	ldr r2, [r1, #8]
 	adds r2, r2, r1
 	adds r1, r5, #0
-	bl sub_08021D2C
+	bl __call_via_r2
 	adds r4, #1
 	cmp r4, #4
 	blt _0800529A

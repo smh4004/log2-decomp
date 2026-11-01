@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Code discovery for Dragon Ball Z: Buu's Fury (ARM ADS 1.x C++, Thumb + ARM).
+"""Code discovery for Webfoot GBA games (Legacy of Goku II, Buu's Fury; ARM ADS 1.x C++, Thumb + ARM).
 
 Recursive descent with confidence levels. Every trace has a *root* (seed) and a level
 (0 = certain ... 6 = guess). Each instruction/pool word remembers its root, so when a
@@ -310,6 +310,13 @@ def gaps(cov, start=0xC0):
     return out
 
 
+def is_cstring(d, o, n=4):
+    """Printable ASCII run of at least n bytes ending in NUL (assert messages and file names in the code area)."""
+    e = o
+    while e < len(d) and (32 <= d[e] < 127 or d[e] in (9, 10)): e += 1
+    return e - o >= n and e < len(d) and d[e] == 0
+
+
 def full_analysis(d, text_end, iwram, extra_seeds=()):
     A = Analyzer(d, text_end, iwram)
     A.root_level = {}; A.evicted = set()
@@ -327,6 +334,7 @@ def full_analysis(d, text_end, iwram, extra_seeds=()):
             w = struct.unpack_from('<I', d, o)[0]
             if w & 1 and ROM + 0xC0 < w < ROM + text_end and (w - 1) not in A.insn:
                 if need_push and d[w - ROM] != 0xB5: continue
+                if is_cstring(d, w - 1 - ROM): continue
                 A.try_func(w - 1, 't', level)
 
     def arm_prologues(level):
@@ -351,6 +359,14 @@ def full_analysis(d, text_end, iwram, extra_seeds=()):
                 w = struct.unpack_from('<I', d, p)[0] if p % 4 == 0 else None
                 if w is not None and (0x02000000 <= w < 0x0A000000 or w == 0): p += 4; continue
                 if d[p] == 0 and d[p + 1] == 0: p += 2; continue
+                # C strings (assert file names and messages reached with `adr`): printable run + NUL
+                e = p
+                while e < g1 and (32 <= d[e] < 127 or d[e] in (9, 10)): e += 1
+                if e - p >= 4 and e < g1 and d[e] == 0:
+                    p = e + 1
+                    while p < g1 and d[p] == 0: p += 1
+                    p += p & 1
+                    continue
                 break
             if p + 2 <= g1: A.try_func(ROM + p, 't', level)
             q = (g0 + 3) & ~3

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Argument counts for the armlink veneers (0x08049114-0x080491EF).
+"""Argument counts for the armlink veneers (config/game.json: between the ctor vector and the vtables).
 
 Each veneer jumps to an ARM routine (mostly in the IWRAM image: memset/memcpy-style blitters, the WFZ decoder, ...).
 Ghidra can't see through them, so it guesses a different parameter list at every call site, and calls lose
@@ -13,12 +13,14 @@ from capstone.arm import ARM_REG_R0, ARM_REG_R1, ARM_REG_R2, ARM_REG_R3
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')); os.chdir(ROOT)
 d = open('baserom.gba', 'rb').read()
-IW_LMA = 0x7B79A4
+import sys; sys.path.insert(0, os.path.join(ROOT, 'tools', 'bfdis'))
+from game import IWRAM, CTOR_HI, VT_LO
+IW_LMA = IWRAM[0]
 ARGS = [ARM_REG_R0, ARM_REG_R1, ARM_REG_R2, ARM_REG_R3]
 
 
 def read(addr, n):
-    if 0x03000000 <= addr < 0x03001004: o = IW_LMA + addr - 0x03000000
+    if 0x03000000 <= addr < 0x03000000 + IWRAM[2]: o = IW_LMA + addr - 0x03000000
     elif 0x08000000 <= addr < 0x08800000: o = addr - 0x08000000
     else: return None
     return d[o:o + n]
@@ -54,7 +56,7 @@ def used_args(entry, thumb):
 
 
 out = []
-for va in range(0x08049114, 0x080491F0, 2):
+for va in range(0x08000000 + CTOR_HI, 0x08000000 + VT_LO, 2):
     o = va - 0x08000000
     h = struct.unpack_from('<H', d, o)[0]
     if h == 0x4778:                                   # bx pc ; nop ; ldr pc, [pc, #-4] ; .word target

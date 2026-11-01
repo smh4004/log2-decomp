@@ -16,6 +16,8 @@ from capstone.arm import ARM_REG_R0, ARM_OP_REG
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')); os.chdir(ROOT)
 ROM = 0x08000000
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'bfdis'))
+from game import CALL_VIA, TEXT_END
 d = open('baserom.gba', 'rb').read()
 db = pickle.load(open('.analysis/analysis.pickle', 'rb'))
 insn = db['insn']
@@ -78,7 +80,7 @@ def main():
             if v & 1: used.add(v & ~1)
     # virtual methods: called as `ldr rA,[obj]; ldr rB,[rA,#k]; add rB,rA; bl __call_via_rB`. A method in slot k is
     # live if r0 is live after any virtual call through slot k.
-    via = {0x08046AA0 + 2 * n for n in range(8)}
+    via = {CALL_VIA + 2 * n for n in range(8)}
     slot_live = collections.defaultdict(bool)
     unknown_slot = False
     for c, (m, sz) in insn.items():
@@ -98,9 +100,11 @@ def main():
         if unknown_slot or slot_live.get(e - b, True): used.add(t)
     for o, (t, m) in db['ctor'].items(): used.add(t)
     # data pointers in .rodata
-    for o in range(0x54FBC, len(d) - 3, 4):
-        v = struct.unpack_from('<I', d, o)[0]
-        if v & 1 and (v & ~1) in db['funcs']: used.add(v & ~1)
+    # (only words the disassembler converted to symbols: raw scanning would count PCM/graphics noise)
+    import glob, re
+    for p in glob.glob('data/*.s') + glob.glob('asm/iwram.s'):
+        for m in re.finditer(r'\.4byte (?:sub|_)([0-9A-F]{8})(?: \+ 1)?\b', open(p).read()):
+            used.add(int(m.group(1), 16))
     # tail calls
     for a, (m, sz) in insn.items():
         if m == 't' and sz == 2:

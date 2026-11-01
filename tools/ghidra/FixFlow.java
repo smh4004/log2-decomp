@@ -38,9 +38,9 @@ public class FixFlow extends GhidraScript {
                 }
             }
         }
-        // the veneers themselves (0x08049114-0x080491EF: `bx pc; nop; ldr pc, =target`, `ldr ip, =t; bx ip`): model the
+        // the veneers themselves (0x0802369C-0x0802371F: `bx pc; nop; ldr pc, =target`, `ldr ip, =t; bx ip`): model the
         // jump as call-and-return, so the decompiler sees an ordinary function that comes back to its caller
-        Address vlo = toAddr(0x08049114L), vhi = toAddr(0x080491EFL);
+        Address vlo = toAddr(0x0802369CL), vhi = toAddr(0x0802371FL);
         for (Instruction in : currentProgram.getListing().getInstructions(new AddressSet(vlo, vhi), true)) {
             String o = in.toString().toLowerCase();
             if ((o.startsWith("ldr pc") || (o.startsWith("bx ") && !o.contains("lr"))))

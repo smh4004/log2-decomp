@@ -1,7 +1,7 @@
 """Fixed-size game tables <-> CSV (used by assets.py).
 
 Each table is a run of fixed-size records. Columns are typed (u8/s8/u16/s16/u32/s32/ptr). A `ptr` column holds a label
-from data/rodata_*.s (or `label + 0xK`, or a hex address for code, or 0), so a pointer can be aimed at any other object,
+from data/rodata_*.s (or `label + 0xK`, or a hex address/number), so a pointer can be aimed at any other object,
 including objects added by other tools. Columns starting with `_` are read-only hints (UI text for a string index) and
 are ignored on build. A changed record is written back in place: records keep their size and the row count is fixed.
 
@@ -10,73 +10,55 @@ SPECS, since only the types and order matter to the build.
 """
 import os, re, csv, struct
 import labels as L
-import bfscript as B
-
-ROM = 0x08000000
-UI_PTRS = 0x6BCE8
+from const import ROM, RODATA, AREAS, ui_string
 
 # name, offset, count, record size, [(column, offset, type, ui?)]
 SPECS = {
-    'areas': (0x8E2E0, 452, 56, [
+    'areas': (AREAS[0], AREAS[1], AREAS[2], [
         ('world', 0, 'u8'), ('area', 1, 'u8'), ('b2', 2, 'u8'), ('b3', 3, 'u8'), ('b4', 4, 'u8'), ('b5', 5, 'u8'),
-        ('b6', 6, 'u8'), ('b7', 7, 'u8'), ('w08', 8, 'u32'), ('name', 0xC, 'u32', 'ui'),
+        ('b6', 6, 'u8'), ('b7', 7, 'u8'), ('w08', 8, 'u32'), ('name', 0xC, 'ptr', 'ui'),
         ('p10', 0x10, 'ptr'), ('p14', 0x14, 'ptr'), ('p18', 0x18, 'ptr'), ('p1C', 0x1C, 'ptr'), ('p20', 0x20, 'ptr'),
-        ('w24', 0x24, 'u32'), ('w28', 0x28, 'u32'), ('scene', 0x2C, 'ptr'), ('p30', 0x30, 'ptr'), ('p34', 0x34, 'ptr')]),
-    'equipment': (0x6F82EC, 162, 44, [
-        ('name', 0, 'u16', 'ui'), ('desc', 2, 'u16', 'ui'), ('icon_w', 4, 'u32'), ('icon_h', 8, 'u32'),
-        ('icon_oam', 0xC, 'u32'), ('icon', 0x10, 'ptr'), ('slot', 0x14, 'u8'), ('level_plus_50', 0x15, 'u8'),
-        ('stat0', 0x16, 's8'), ('stat1', 0x17, 's8'), ('stat2', 0x18, 's8'), ('stat3', 0x19, 's8'),
-        ('stat4', 0x1A, 's8'), ('stat5', 0x1B, 's8'), ('w1C', 0x1C, 'u32'), ('price', 0x20, 's32'),
-        ('w24', 0x24, 'u32'), ('w28', 0x28, 'u32')]),
-    'items': (0x3BD500, 24, 52, [
-        ('category', 0, 'u16'), ('name', 2, 'u16', 'ui'), ('name2', 4, 'u16', 'ui'), ('plural', 6, 'u16', 'ui'),
-        ('desc', 8, 'u16', 'ui'), ('h0A', 0xA, 'u16'), ('icon_w', 0xC, 'u32'), ('icon_h', 0x10, 'u32'),
-        ('icon_oam', 0x14, 'u32'), ('icon', 0x18, 'ptr'), ('icon2_w', 0x1C, 'u32'), ('icon2_h', 0x20, 'u32'),
-        ('icon2_oam', 0x24, 'u32'), ('icon2', 0x28, 'ptr'), ('price', 0x2C, 'u32'), ('effect', 0x30, 'ptr')]),
-    'enemies': (0x711274, 150, 28, [
-        ('exp', 0, 'u32'), ('hp', 4, 'u32'), ('id08', 8, 'u32'), ('level_plus_50', 0xC, 'u8'),
-        ('str', 0xD, 'u8'), ('pow', 0xE, 'u8'), ('end', 0xF, 'u8'), ('phys_taken', 0x10, 'u8'), ('ki_taken', 0x11, 'u8'),
-        ('b12', 0x12, 'u8'), ('b13', 0x13, 'u8'), ('on_defeat', 0x14, 'ptr'), ('death_script', 0x18, 'ptr')]),
-    'spawns': ('list', 'find_spawns', 32, [
-        ('w04', 4, 'u32'), ('enemy', 8, 'u32'), ('x', 0xC, 'u16'), ('y', 0xE, 'u16'), ('character', 0x10, 'u32'),
-        ('behaviour', 0x14, 'ptr'), ('w18', 0x18, 'u32'), ('ai', 0x1C, 'ptr')]),
-    'scouter': (0x74D380, 232, 16, [
-        ('name', 0, 'u16', 'ui'), ('desc', 2, 'u16', 'ui'), ('character', 4, 'u32'), ('w08', 8, 'u32'), ('w0C', 0xC, 's32')]),
+        ('music', 0x24, 'ptr'), ('w28', 0x28, 'ptr'), ('scene', 0x2C, 'ptr'), ('p30', 0x30, 'ptr'), ('p34', 0x34, 'ptr')]),
+    'items': (0x6ADE24, 50, 56, [
+        ('b0', 0, 'u8'), ('b1', 1, 'u8'), ('b2', 2, 'u8'), ('max_count', 3, 'u8'), ('name', 4, 'u16', 'ui'), ('desc', 6, 'u16', 'ui'),
+        ('icon_w', 8, 'u32'), ('icon_h', 0xC, 'u32'), ('icon_oam', 0x10, 'u32'), ('icon', 0x14, 'ptr'),
+        ('icon2_w', 0x18, 'u32'), ('icon2_h', 0x1C, 'u32'), ('icon2_oam', 0x20, 'u32'), ('icon2', 0x24, 'ptr'),
+        ('p28', 0x28, 'ptr'), ('p2C', 0x2C, 'ptr'), ('on_use', 0x30, 'ptr'), ('handler', 0x34, 'ptr')]),
+    'enemies': (0x6D56AC, 109, 24, [
+        ('exp', 0, 'u32'), ('hp', 4, 'u32'), ('character', 8, 'u32'), ('str', 0xC, 'u8'), ('pow', 0xD, 'u8'),
+        ('end', 0xE, 'u8'), ('phys_taken', 0xF, 'u8'), ('ki_taken', 0x10, 'u8'), ('b11', 0x11, 'u8'),
+        ('b12', 0x12, 'u8'), ('b13', 0x13, 'u8'), ('behaviour', 0x14, 'ptr')]),
+    'spawns': ('list', 'find_spawns', 28, [
+        ('id', 4, 'u32'), ('enemy', 8, 'u32'), ('x', 0xC, 'u16'), ('y', 0xE, 'u16'), ('w10', 0x10, 'u32'),
+        ('path', 0x14, 'ptr'), ('path_points', 0x18, 'u32')]),
 }
 FMT = {'u8': '<B', 's8': '<b', 'u16': '<H', 's16': '<h', 'u32': '<I', 's32': '<i', 'ptr': '<I'}
 NOTES = {
-    'areas': 'gAreaTable: one row per area. name = UI string index (area name). scene -> record whose first word is the '
-             'map (map record + 4). p10-p34: scripts, event lists and actor lists of the area (inferred).',
-    'equipment': 'Equipment. slot: 0 body, 1 hands, 2 feet, 3 accessory. level_plus_50: required level + 50 (inferred). '
-                 'stat0-5: signed bonuses (STR/POW/END/SPD order inferred). price -1 = not sold.',
-    'items': 'Consumables and key items. category 0 = usable, 1 = key item. effect -> bytecode run when used '
-             '(assets/scripts/items/*.scr).',
-    'enemies': 'Enemy stats (gUnknown_08711274, indexed by spawns.enemy; alphabetical by enemy name). level_plus_50 = level + 50. '
-               'str/pow = physical/ki attack, end = defence (both kinds). phys_taken/ki_taken = damage taken, 128 = 100%. '
-               'exp is scaled by the player when awarded. death_script -> bytecode run on defeat (item drops: call 0xD8(item, chance, n)), '
-               'see assets/scripts/enemies/*.scr. on_defeat = handler object. _names: enemy names from spawns + scouter.',
-    'spawns': 'Every enemy placed in an area (1,571 records, found by their spawn function sub_0800FD54). enemy = row of enemies.csv, '
-              'x/y = position in map pixels, character = sprite/character id (scouter.csv), behaviour/ai = handler pointers.',
-    'scouter': 'Scouter/journal entries: name and description strings plus the character id (index into the '
-               'character collision table at 0x086B6BB4).',
+    'areas': 'Area table (0x08409368): one row per area. name = UI string index (area name). scene -> record whose first '
+             'word is the map (map record + 4). name/music/w28 hold a number, or -> bytecode that computes it (inferred). '
+             'p10-p20, p30, p34: event lists and actor lists of the area (inferred).',
+    'items': 'Item table (0x086ADE24): name/desc = UI string indexes. max_count = how many can be carried (inferred). '
+             'icon/icon2: sprite pixel blocks with their size and OAM attributes. on_use = code run when the item is used '
+             '(0x0800F45B STR cap, 0x0800F4C3 POW cap, 0x0800F52B END cap, 0x0800F593 heal, 0x0800F639 energy; inferred).',
+    'enemies': 'Enemy types (0x086D56AC, 24 bytes, indexed by spawns.enemy; the spawn function sub_0800E77E reads it). '
+               'exp = EXP for a kill (above 5 it is scaled to the player level by the game), hp = hit points (also the '
+               'health bar maximum). str/pow/end = melee attack / energy attack / defence (inferred from the values: '
+               'melee-only enemies have pow 1). phys_taken/ki_taken = damage taken, 128 = 100% (inferred, as in Buu\'s Fury). '
+               'character = sprite/animation set (table 0x086D5194). behaviour -> AI handler table.',
+    'spawns': 'Every enemy placed in an area: records whose first word is the spawn function 0x0800E77F (666 records). '
+              'enemy = row of enemies.csv, x/y = position in map pixels, path -> path_points patrol points (inferred). '
+              'The record is followed by its path point pointers, so records keep their size.',
 }
 
 
 def u32(d, o): return struct.unpack_from('<I', d, o)[0]
 
 
-def ui_string(d, i):
-    if i >= 1534: return ''
-    o = u32(d, UI_PTRS + 4 * i) - ROM; e = o
-    while struct.unpack_from('<H', d, e)[0]: e += 2
-    return d[o:e].decode('utf-16-le')
-
-
 def ptr_text(v):
     if v == 0: return '0'
     o = v - ROM
-    if 0x54FBC <= o < 0x7B79A4: return L.symbol(o)
-    return '0x%08X' % v
+    if RODATA[0] <= o < RODATA[1]: return L.symbol(o)
+    return str(v) if v < 0x10000 else '0x%08X' % v
 
 
 def ptr_expr(s):
@@ -85,11 +67,11 @@ def ptr_expr(s):
     return s if s and not re.match(r'^-?(0x[0-9A-Fa-f]+|\d+)$', s) else str(int(s, 0) & 0xFFFFFFFF)
 
 
-SPAWN_FN = 0x0800FD55          # sub_0800FD54 + 1, first word of every enemy spawn record
+SPAWN_FN = 0x0800E77F            # sub_0800E77E + 1, first word of every enemy spawn record
 
 
 def find_spawns(d):
-    return [o for o in range(0x54FBC, 0x7B79A4, 4) if u32(d, o) == SPAWN_FN]
+    return [o for o in range(RODATA[0], RODATA[1], 4) if u32(d, o) == SPAWN_FN]
 
 
 def rows_of(d, name):
@@ -98,33 +80,32 @@ def rows_of(d, name):
     return [off + size * i for i in range(n)], size, cols
 
 
-def char_names(d):
-    """character id -> name, from the scouter table."""
-    off, n, size, cols = SPECS['scouter']; out = {}
-    for i in range(n):
-        nm, ds, ch = struct.unpack_from('<HHI', d, off + size * i)
-        out.setdefault(ch, ui_string(d, nm))
-    return out
-
-
-def enemy_names(d):
-    cn = char_names(d); out = {}
-    for o in find_spawns(d):
-        e, ch = u32(d, o + 8), u32(d, o + 0x10)
-        if ch in cn: out.setdefault(e, [])
-        if ch in cn and cn[ch] not in out[e]: out[e].append(cn[ch])
-    return {e: ' / '.join(v) for e, v in out.items()}
-
-
 def hints(d, name):
     """read-only hint columns: name -> function(row index, record offset) -> text"""
-    if name == 'enemies':
-        en = enemy_names(d); return {'_names': lambda i, r: en.get(i, '')}
     if name == 'spawns':
-        en = enemy_names(d); cn = char_names(d)
-        return {'_address': lambda i, r: L.symbol(r), '_enemy': lambda i, r: en.get(u32(d, r + 8), ''),
-                '_character': lambda i, r: cn.get(u32(d, r + 0x10), '')}
+        areas = spawn_areas(d)
+        return {'_address': lambda i, r: L.symbol(r), '_area': lambda i, r: areas.get(r, '')}
+    if name == 'enemies':
+        cnt = {}
+        for r in find_spawns(d): cnt[u32(d, r + 8)] = cnt.get(u32(d, r + 8), 0) + 1
+        return {'_placed': lambda i, r: cnt.get(i, 0)}
     return {}
+
+
+def spawn_areas(d):
+    """spawn record -> 'world-area name' (area +0x14 -> list of actor list pointers, area +4 = count)."""
+    out = {}
+    off, n, size, _ = SPECS['areas']
+    sp = set(find_spawns(d))
+    for i in range(n):
+        r = off + size * i
+        lst, cnt = u32(d, r + 0x14), d[r + 4]
+        if not RODATA[0] <= lst - ROM < RODATA[1]: continue
+        nm = '%02X-%02X %s' % (d[r], d[r + 1], ui_string(d, u32(d, r + 0xC)) if u32(d, r + 0xC) < 0x10000 else '')
+        for k in range(cnt):
+            a = u32(d, lst - ROM + 4 * k) - ROM
+            if a in sp: out.setdefault(a, nm)
+    return out
 
 
 def export(d, name, path):
@@ -143,7 +124,7 @@ def export(d, name, path):
             for c in cols:
                 v = struct.unpack_from(FMT[c[2]], d, r + c[1])[0]
                 row.append(ptr_text(v) if c[2] == 'ptr' else v)
-                if len(c) > 3 and c[3] == 'ui': row.append(ui_string(d, v))
+                if len(c) > 3 and c[3] == 'ui': row.append(ui_string(d, v) if v < 0x10000 else '(script)')
             w.writerow(row)
 
 
@@ -174,33 +155,3 @@ def build(d, name, path, ctx):
         ctx.asm(r, r + size, '\n'.join(lines) + '\n', size, '%s%d' % (name, i))
 
 
-# ------------------------------------------------------------------ item effect scripts
-def effect_scripts(d):
-    off, n, size, cols = SPECS['items']
-    out = []
-    for i in range(n):
-        p = u32(d, off + size * i + 0x30)
-        if p: out.append((i, p - ROM, ui_string(d, struct.unpack_from('<H', d, off + size * i + 2)[0])))
-    return out
-
-
-def death_scripts(d):
-    off, n, size, cols = SPECS['enemies']; en = enemy_names(d); seen = set(); out = []
-    for i in range(n):
-        p = u32(d, off + size * i + 0x18)
-        if p and p not in seen:
-            seen.add(p); out.append((i, p - ROM, en.get(i, '') or 'enemy%d' % i))
-    return out
-
-
-def export_script(d, start, path, title, names):
-    text, end = B.disasm(d, start, names)
-    open(path, 'w').write('; %s  (%s, 0x%08X). Bytecode: see tools/scripts/bfscript.py.\n%s'
-                          % (title, L.symbol(start), ROM + start, text))
-    return end
-
-
-def build_script(d, a, path, ctx, names):
-    code = B.asm(open(path).read(), names)
-    if code == d[a['start']:a['end']]: return
-    ctx.put(a['start'], a['end'], code, 'scr')

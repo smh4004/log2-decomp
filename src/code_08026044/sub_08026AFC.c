@@ -1,0 +1,21 @@
+/* sub_08026AFC  (original: 0x08026AFC-0x08026B28 in asm/code_08026044.s)
+ * Ghidra decompilation, compiled with GCC; not reached by the capture routes (compiles; unverified).
+ */
+#include "ghidra_types.h"
+extern int sub_0801F110();
+extern int sub_08020EAA();
+extern undefined volatile _08023720;
+
+
+void sub_08026AFC(undefined4 *param_1,int param_2,undefined4 param_3,undefined4 param_4)
+
+{
+  sub_08020EAA(param_1 + 0x15,0,param_3,param_4,param_4);
+  sub_08020EAA(param_1 + 7,0);
+  *param_1 = &_08023720;
+  if (param_2 != 0) {
+    sub_0801F110(param_1);
+  }
+  return;
+}
+

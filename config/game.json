@@ -38,5 +38,7 @@
    "0x14A8A0",
    "PCM samples (music)"
   ]
- ]
+ ],
+ "call_via": "0x08021D28",
+ "syncpc": "0x08020D78"
 }

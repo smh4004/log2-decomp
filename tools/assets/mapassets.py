@@ -20,7 +20,7 @@ import labels as L
 from wfz import unpack
 from wfz_compress import compress
 
-ROM = 0x08000000
+from const import ROM, AREAS, ui_string
 
 
 def u32(d, o): return struct.unpack_from('<I', d, o)[0]
@@ -30,8 +30,6 @@ def map_name(o):
     return L.name_at(o) or 'map_%06X' % o
 
 
-AREAS = (0x8E2E0, 452, 56)
-UI_PTRS = 0x6BCE8
 
 
 def area_links(d):
@@ -42,13 +40,7 @@ def area_links(d):
         sc = u32(d, r + 0x2C)
         if not sc: continue
         mo = u32(d, sc - ROM) - ROM - 4
-        nm = u32(d, r + 0xC)
-        o = u32(d, UI_PTRS + 4 * nm) - ROM if nm < 1534 else None
-        name = ''
-        if o is not None:
-            e = o
-            while struct.unpack_from('<H', d, e)[0]: e += 2
-            name = d[o:e].decode('utf-16-le')
+        name = ui_string(d, u32(d, r + 0xC))
         out.setdefault(mo, []).append((d[r], d[r + 1], name))
     return out
 

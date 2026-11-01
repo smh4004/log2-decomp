@@ -1,4 +1,4 @@
-/* Linker script for Dragon Ball Z: Buu's Fury (USA) disassembly. */
+/* Linker script for Dragon Ball Z: The Legacy of Goku II (USA) disassembly. */
 OUTPUT_ARCH(arm)
 ENTRY(_start)
 
@@ -21,7 +21,7 @@ SECTIONS
         INCLUDE "build/data_objs.ld"
     } > ROM
 
-    /* RW image: copied to 0x03000000 by crt0 (DMA3 from __iwram_lma, 0x1004 bytes). */
+    /* RW image: copied to 0x03000000 by crt0 (DMA3 from __iwram_lma, 0xE7F bytes). */
     .iwram :
     {
         __iwram_start = .;

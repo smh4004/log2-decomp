@@ -14,8 +14,7 @@ import struct, sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'wfz'))
 from wfz import unpack
 
-ROM = 0x08000000
-PALETTE = 0x701B0
+from const import ROM, PALETTE, PAGE_TABLE, RODATA
 
 
 def u32(d, o): return struct.unpack_from('<I', d, o)[0]
@@ -78,13 +77,12 @@ def render_layer(d, m, k, page_cache=None):
 
 
 # ------------------------------------------------------------------ whole-layer access (all maps)
-PAGE_TABLE = 0x179764
 
 
 def find_maps(d):
     """Every map record: they all point at the global tile page table at +0x50."""
     out = []
-    for o in range(0x54FBC, 0x7B79A4, 4):
+    for o in range(RODATA[0], RODATA[1], 4):
         if u32(d, o) == ROM + PAGE_TABLE: out.append(o - 0x50)
     return out
 
