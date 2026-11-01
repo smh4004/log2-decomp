@@ -1,0 +1,12 @@
+{
+  "name": "log2",
+  "title": "Dragon Ball Z: The Legacy of Goku II (USA)",
+  "code": "ALFE",
+  "sha1": "18e0715dec419f3501c301511530d2edcd590f8b",
+  "text_start": "0x158",
+  "text_end": "0x28724",
+  "ctor": ["0x23588", "0x2369C"],
+  "vtables": ["0x23720", "0x26048"],
+  "iwram": ["0x7FD6BC", "0x03000000", "0xE80"],
+  "sound": ["0x0", "0x0"]
+}

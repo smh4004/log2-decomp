@@ -1,0 +1,2 @@
+# Instructions GNU as encodes differently from the original; emitted as raw words (tools/bfdis/verify.py --write-raw).
+08000C0C

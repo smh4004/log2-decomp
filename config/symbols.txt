@@ -1,0 +1,3 @@
+# address  name        -- known symbols (edit freely; rerun tools/bfdis/gen.py)
+# Code
+080000C0 _start                 # crt0 (ARM)
