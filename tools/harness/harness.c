@@ -191,6 +191,9 @@ int main(int argc, char** argv) {
     vbuf = calloc(256 * 256, sizeof(color_t));
     core->setVideoBuffer(core, vbuf, 256);
     if (!mCoreLoadFile(core, argv[1])) { fprintf(stderr, "load failed\n"); return 1; }
+    /* HARNESS_SAVE=path.sav: start with that save chip content (raw EEPROM/flash/SRAM; the file is never written) */
+    const char* sav = getenv("HARNESS_SAVE");
+    if (sav && *sav && !mCoreLoadSaveFile(core, sav, true)) { fprintf(stderr, "save load failed: %s\n", sav); return 1; }
     core->reset(core);
     FILE* sc = fopen(argv[2], "r");
     if (!sc) { perror("script"); return 1; }
@@ -304,6 +307,11 @@ int main(int argc, char** argv) {
             printf("\n  stack:");
             for (int k = 0; k < 40; k++) printf(" %08x", core->busRead32(core, cpu->gprs[13] + 4 * k));
             printf("\n");
+        }
+        else if (!strcmp(cmd, "poke")) {   /* poke ADDR VALUE [1|2|4]: write RAM (for capture routes that set up a state) */
+            uint32_t ad = strtoul(a1, 0, 16), v = strtoul(a2, 0, 0);
+            int w = a3[0] ? atoi(a3) : 4;
+            if (w == 1) core->busWrite8(core, ad, v); else if (w == 2) core->busWrite16(core, ad, v); else core->busWrite32(core, ad, v);
         }
         else if (!strcmp(cmd, "mem")) {
             struct ARMCore* cpu = core->cpu;
