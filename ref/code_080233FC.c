@@ -220,8 +220,6 @@ void sub_0802369C(void)
 
 /* sub_080236A8 @ 0x080236A8 */
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
-
 int sub_080236A8(int a0,int a1,int a2,int a3)
 
 {
@@ -233,8 +231,6 @@ int sub_080236A8(int a0,int a1,int a2,int a3)
 
 
 /* sub_080236AC @ 0x080236AC */
-
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
 int sub_080236AC(int a0,int a1,int a2,int a3)
 
@@ -248,8 +244,6 @@ int sub_080236AC(int a0,int a1,int a2,int a3)
 
 /* sub_080236B4 @ 0x080236B4 */
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
-
 int sub_080236B4(int a0,int a1)
 
 {
@@ -261,8 +255,6 @@ int sub_080236B4(int a0,int a1)
 
 
 /* sub_080236B8 @ 0x080236B8 */
-
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
 int sub_080236B8(int a0,int a1)
 
@@ -276,8 +268,6 @@ int sub_080236B8(int a0,int a1)
 
 /* sub_080236C0 @ 0x080236C0 */
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
-
 int sub_080236C0(int a0,int a1)
 
 {
@@ -289,8 +279,6 @@ int sub_080236C0(int a0,int a1)
 
 
 /* sub_080236C4 @ 0x080236C4 */
-
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
 int sub_080236C4(int a0,int a1)
 
@@ -304,8 +292,6 @@ int sub_080236C4(int a0,int a1)
 
 /* sub_080236CC @ 0x080236CC */
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
-
 int sub_080236CC(int a0,int a1,int a2)
 
 {
@@ -317,8 +303,6 @@ int sub_080236CC(int a0,int a1,int a2)
 
 
 /* sub_080236D0 @ 0x080236D0 */
-
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
 int sub_080236D0(int a0,int a1,int a2)
 
@@ -332,8 +316,6 @@ int sub_080236D0(int a0,int a1,int a2)
 
 /* sub_080236D8 @ 0x080236D8 */
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
-
 int sub_080236D8(int a0,int a1,int a2,int a3)
 
 {
@@ -345,8 +327,6 @@ int sub_080236D8(int a0,int a1,int a2,int a3)
 
 
 /* sub_080236DC @ 0x080236DC */
-
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
 int sub_080236DC(int a0,int a1,int a2,int a3)
 
@@ -360,8 +340,6 @@ int sub_080236DC(int a0,int a1,int a2,int a3)
 
 /* sub_080236E4 @ 0x080236E4 */
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
-
 int sub_080236E4(int a0,int a1,int a2,int a3)
 
 {
@@ -373,8 +351,6 @@ int sub_080236E4(int a0,int a1,int a2,int a3)
 
 
 /* sub_080236E8 @ 0x080236E8 */
-
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
 int sub_080236E8(int a0,int a1,int a2,int a3)
 
@@ -388,8 +364,6 @@ int sub_080236E8(int a0,int a1,int a2,int a3)
 
 /* sub_080236F0 @ 0x080236F0 */
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
-
 int sub_080236F0(int a0,int a1,int a2,int a3)
 
 {
@@ -401,8 +375,6 @@ int sub_080236F0(int a0,int a1,int a2,int a3)
 
 
 /* sub_080236F4 @ 0x080236F4 */
-
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
 int sub_080236F4(int a0,int a1,int a2,int a3)
 
@@ -416,10 +388,10 @@ int sub_080236F4(int a0,int a1,int a2,int a3)
 
 /* sub_080236FC @ 0x080236FC */
 
-void sub_080236FC(void)
+void sub_080236FC(int param_1,char *param_2)
 
 {
-  sub_08022D00();
+  sub_08022D00(param_1,param_2);
   return;
 }
 
@@ -436,90 +408,90 @@ void sub_08023708(void)
 
 /* sub_08023714 @ 0x08023714 */
 
-void sub_08023714(void)
+void sub_08023714(undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  sub_08022D44();
+  sub_08022D44(param_1,param_2,param_3);
   return;
 }
 
 
 /* sub_08023828 @ 0x08023828 */
 
-void sub_08023828(undefined4 param_1,undefined4 param_2,int param_3)
+void sub_08023828(undefined4 param_1,int param_2,int param_3,undefined4 param_4)
 
 {
-  sub_0801F394(*(undefined4 *)(&gUnknown_086F7FDC + param_3 * 4));
+  sub_0801F394(*(int **)(&gUnknown_086F7FDC + param_3 * 4),param_2);
   return;
 }
 
 
 /* sub_0802397C @ 0x0802397C */
 
-void sub_0802397C(int param_1)
+void sub_0802397C(int param_1,int param_2,int param_3)
 
 {
-  sub_08002B32(param_1 + -0x11c);
+  sub_08002B32(param_1 + -0x11c,param_2,param_3);
   return;
 }
 
 
 /* sub_08023BAC @ 0x08023BAC */
 
-void sub_08023BAC(int param_1)
+void sub_08023BAC(int param_1,undefined4 *param_2,int param_3)
 
 {
-  sub_08003BB0(param_1 + -0x11c);
+  sub_08003BB0(param_1 + -0x11c,param_2,param_3);
   return;
 }
 
 
 /* sub_08023CC0 @ 0x08023CC0 */
 
-void sub_08023CC0(int param_1)
+void sub_08023CC0(int param_1,int param_2,int param_3)
 
 {
-  sub_08002B32(param_1 + -0x11c);
+  sub_08002B32(param_1 + -0x11c,param_2,param_3);
   return;
 }
 
 
 /* sub_08023E14 @ 0x08023E14 */
 
-void sub_08023E14(int param_1)
+void sub_08023E14(int param_1,undefined4 *param_2)
 
 {
-  sub_080048F0(param_1 + -8);
+  sub_080048F0(param_1 + -8,param_2);
   return;
 }
 
 
 /* sub_080242BC @ 0x080242BC */
 
-void sub_080242BC(int param_1)
+void sub_080242BC(int param_1,undefined4 *param_2)
 
 {
-  sub_08001CBA(param_1 + -8);
+  sub_08001CBA(param_1 + -8,param_2);
   return;
 }
 
 
 /* sub_080243D4 @ 0x080243D4 */
 
-void sub_080243D4(int param_1)
+void sub_080243D4(int param_1,int param_2,int param_3)
 
 {
-  sub_08002B32(param_1 + -0x11c);
+  sub_08002B32(param_1 + -0x11c,param_2,param_3);
   return;
 }
 
 
 /* sub_08024434 @ 0x08024434 */
 
-void sub_08024434(undefined4 param_1,undefined4 param_2,int param_3)
+void sub_08024434(undefined4 param_1,int param_2,int param_3,undefined4 param_4)
 
 {
-  sub_0801F394(*(undefined4 *)(&gUnknown_086F7FDC + param_3 * 4));
+  sub_0801F394(*(int **)(&gUnknown_086F7FDC + param_3 * 4),param_2);
   return;
 }
 

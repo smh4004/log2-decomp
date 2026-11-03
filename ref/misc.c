@@ -5,7 +5,6 @@
 
 /* WARNING: Removing unreachable block (ram,0x0300012c) */
 /* WARNING: Type propagation algorithm not settling */
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
 int sub_03000000(int a0,int a1,int a2,int a3)
 
@@ -32,7 +31,6 @@ int sub_03000000(int a0,int a1,int a2,int a3)
 _03000024:
   while( true ) {
     puVar4 = (uint *)((ulonglong)uVar12 >> 0x20);
-    uVar2 = (undefined4)uVar12;
     iVar8 = iVar8 + -1;
     puVar5 = puVar4;
     if (iVar8 < 0) {
@@ -58,16 +56,14 @@ _03000024:
     unaff_r6 = unaff_r6 * 2;
     if (bVar10) break;
     iVar8 = iVar8 + -1;
-    puVar5 = puVar4;
     if (iVar8 < 0) {
-      puVar5 = puVar4 + 1;
       unaff_r6 = *puVar4;
       iVar8 = 0x1f;
     }
     bVar10 = CARRY4(unaff_r6,unaff_r6);
     unaff_r6 = unaff_r6 * 2;
     if (!bVar10) {
-      sub_0300024C(uVar2,puVar5);
+      sub_0300024C();
       if (unaff_r7 == 0) {
         iVar8 = sub_0300024C();
         return iVar8;
@@ -77,7 +73,7 @@ _03000024:
       iVar7 = unaff_r7 + 2;
       goto joined_r0x03000220;
     }
-    uVar11 = sub_0300024C(uVar2,puVar5);
+    uVar11 = sub_0300024C();
     puVar5 = (uint *)((ulonglong)uVar11 >> 0x20);
     unaff_r7 = unaff_r7 - 1;
     if (unaff_r7 == 0) {
@@ -178,7 +174,7 @@ _03000020:
         uVar6 = *puVar5;
         iVar8 = 0x1f;
       }
-      uVar11 = CONCAT44(puVar4,uVar2);
+      uVar11 = CONCAT44(puVar4,(int)uVar12);
       unaff_r6 = uVar6 * 2;
     } while (CARRY4(uVar6,uVar6));
 joined_r0x03000220:
@@ -280,8 +276,6 @@ void sub_0300024C(void)
 
 /* sub_0300029C @ 0x0300029C */
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
-
 int sub_0300029C(int a0,int a1,int a2,int a3)
 
 {
@@ -321,8 +315,6 @@ int sub_0300029C(int a0,int a1,int a2,int a3)
 
 /* sub_030002F0 @ 0x030002F0 */
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
-
 int sub_030002F0(int a0,int a1)
 
 {
@@ -359,8 +351,6 @@ int sub_030002F0(int a0,int a1)
 
 
 /* sub_03000348 @ 0x03000348 */
-
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
 int sub_03000348(int a0,int a1)
 
@@ -431,8 +421,6 @@ int sub_03000348(int a0,int a1)
 
 
 /* sub_03000480 @ 0x03000480 */
-
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
 int sub_03000480(int a0,int a1,int a2)
 
@@ -507,8 +495,6 @@ int sub_03000480(int a0,int a1,int a2)
 
 /* sub_03000704 @ 0x03000704 */
 
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
-
 int sub_03000704(int a0,int a1,int a2,int a3)
 
 {
@@ -570,7 +556,6 @@ int sub_03000704(int a0,int a1,int a2,int a3)
 
 /* WARNING: Removing unreachable block (ram,0x03000a8c) */
 /* WARNING: Type propagation algorithm not settling */
-/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
 int sub_03000958(int a0,int a1,int a2,int a3)
 
@@ -598,7 +583,6 @@ int sub_03000958(int a0,int a1,int a2,int a3)
 _03000980:
   while( true ) {
     puVar5 = (uint *)((ulonglong)uVar13 >> 0x20);
-    uVar3 = (undefined4)uVar13;
     iVar9 = iVar9 + -1;
     puVar6 = puVar5;
     if (iVar9 < 0) {
@@ -624,16 +608,14 @@ _03000980:
     unaff_r6 = unaff_r6 * 2;
     if (bVar11) break;
     iVar9 = iVar9 + -1;
-    puVar6 = puVar5;
     if (iVar9 < 0) {
-      puVar6 = puVar5 + 1;
       unaff_r6 = *puVar5;
       iVar9 = 0x1f;
     }
     bVar11 = CARRY4(unaff_r6,unaff_r6);
     unaff_r6 = unaff_r6 * 2;
     if (!bVar11) {
-      sub_03000BAC(uVar3,puVar6);
+      sub_03000BAC();
       if (unaff_r7 == 0) {
         iVar9 = sub_03000BAC();
         return iVar9;
@@ -643,7 +625,7 @@ _03000980:
       iVar8 = unaff_r7 + 2;
       goto joined_r0x03000b80;
     }
-    uVar12 = sub_03000BAC(uVar3,puVar6);
+    uVar12 = sub_03000BAC();
     puVar6 = (uint *)((ulonglong)uVar12 >> 0x20);
     unaff_r7 = unaff_r7 - 1;
     if (unaff_r7 == 0) {
@@ -746,7 +728,7 @@ _0300097C:
         uVar7 = *puVar6;
         iVar9 = 0x1f;
       }
-      uVar12 = CONCAT44(puVar5,uVar3);
+      uVar12 = CONCAT44(puVar5,(int)uVar13);
       unaff_r6 = uVar7 * 2;
     } while (CARRY4(uVar7,uVar7));
 joined_r0x03000b80:
